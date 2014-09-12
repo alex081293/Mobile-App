@@ -1,0 +1,22 @@
+application
+login
+password
+============
+gmail:
+usfandroidapp@gmail.com
+usfbulls
+===========
+000webhost.com:
+usfandroidapp@gmail.com
+usfbull!2
+===========
+phpmyadmin
+a2503721_root
+usfbull!2
+Extra: Database name: a2503721_android
+===========
+FTP Info
+FTP host name	usfandroidapp.net63.net
+FTP user name	a2503721
+FTP password    usfbull!2
+ONLY UPLOAD TO public_html
