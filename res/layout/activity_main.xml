@@ -9,8 +9,30 @@
     tools:context="com.usfMobileApp.mobile_app.MainActivity" >
 
     <TextView
+        android:id="@+id/display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/connectButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="56dp"
         android:text="@string/hello_world" />
+
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="185dp"
+        android:text="Connect" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/display"
+        android:layout_alignTop="@+id/connectButton"
+        android:layout_marginTop="76dp"
+        android:text="Reset" />
 
 </RelativeLayout>
