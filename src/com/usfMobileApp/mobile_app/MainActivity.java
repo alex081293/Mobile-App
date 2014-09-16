@@ -13,13 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.*;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class MainActivity extends ActionBarActivity {
 	helperFunctions help = new helperFunctions();
@@ -32,12 +25,10 @@ public class MainActivity extends ActionBarActivity {
 		Button connectButton = (Button)findViewById(R.id.connectButton);
 		Button resetButton = (Button)findViewById(R.id.resetButton);
 
-
-
 		connectButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				try {
-					String response = help.dbMakeQuery("SELECT * FROM users");
+					String response = help.dbMakeQuery("SELECT * FROM users", "f");
 					display.setText(response);
 				} catch (Exception e) {
 					display.setText("It failed.");
