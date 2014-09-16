@@ -22,7 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends ActionBarActivity {
-
+	helperFunctions help = new helperFunctions();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,16 +31,20 @@ public class MainActivity extends ActionBarActivity {
 		
 		Button connectButton = (Button)findViewById(R.id.connectButton);
 		Button resetButton = (Button)findViewById(R.id.resetButton);
-		
+
+
+
 		connectButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				try {
-					dbMakeQuery("SELECT * FROM users");
+					String response = help.dbMakeQuery("SELECT * FROM users");
+					display.setText(response);
 				} catch (Exception e) {
-					display.setText("It Failed");
+					display.setText("It failed.");
 				}
 			}
 		});
+
 		resetButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				display.setText("Hello World");
@@ -48,39 +52,6 @@ public class MainActivity extends ActionBarActivity {
 		});			
 	}
 	
-	// Sends a request to our web server with the requery in the param, 
-	// hopefully will one day return what we want
-	public void dbMakeQuery(String query) throws Exception {
-		final TextView display = (TextView)findViewById(R.id.display);
-		String url = "http://usfandroidapp.net63.net/mysqlConnect.php?q=" + query;		
-		
-		HttpClient httpclient = new DefaultHttpClient();
-	    HttpGet httpget = new HttpGet(url); 
-
-	    HttpResponse response = null;
-		try {
-			response = httpclient.execute(httpget);
-		} catch (IOException e2) {
-			e2.printStackTrace();
-		}
-
-		BufferedReader rd;
-		try {
-			rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-			StringBuffer result = new StringBuffer();
-			String line = "";
-			try {
-				while ((line = rd.readLine()) != null) {
-					result.append(line);
-				}
-			} catch (IOException e) {
-				e.printStackTrace();
-			}	    
-		    display.setText(result.toString());
-		} catch (IllegalStateException | IOException e1) {
-			e1.printStackTrace();
-		}	    
-	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
