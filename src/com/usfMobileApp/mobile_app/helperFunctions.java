@@ -11,6 +11,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
+import android.os.AsyncTask;
 import android.widget.TextView;
 
 public class helperFunctions {
@@ -30,33 +31,8 @@ public class helperFunctions {
 		}
 		return result;
 	}
-	
-	// To make network calls, needs to be read in a seperate thread	
-	// query - the sql query
-	// type - Type of query that needs to be made
-	//	f - fetch
-	//  i - insert
-	//  d - delete
-	//  u - update
-	public String dbMakeQuery(final String query, final String type) {
 
-		Thread thread = new Thread(new Runnable(){
-			  @Override
-			  public void run(){
-			    try {
-					String result = httpRequest(query, type);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			  }
-			});
-		thread.start();
-		return "temp";
-	}
-	
-	// Sends a request to our web server with the query in the param, 
-	// hopefully will one day return what we want
+	// Sends a request to our web server with the query in the param and the type of query
 	public String httpRequest(String query, String type) throws Exception {
 		String url = "http://usfandroidapp.net63.net/mysqlConnect.php?t=" + type + "&q=" +  URLEncoder.encode(query, "UTF-8");		
 		HttpClient httpclient = new DefaultHttpClient();
@@ -86,8 +62,8 @@ public class helperFunctions {
 				e.printStackTrace();
 			}	    
 			
-			System.out.println(getJSONFromReturn(result.toString()));
-		    return result.toString();
+			return getJSONFromReturn(result.toString());
+
 		    
 		} catch (IllegalStateException | IOException e1) {
 			System.out.println("Database call failed at line read");
@@ -95,5 +71,4 @@ public class helperFunctions {
 		return "";
 	}
 }
-
 

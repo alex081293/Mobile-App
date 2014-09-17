@@ -10,11 +10,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.*;
 
-
 public class MainActivity extends ActionBarActivity {
+	public static String results;
+	
 	helperFunctions help = new helperFunctions();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +26,16 @@ public class MainActivity extends ActionBarActivity {
 		
 		Button connectButton = (Button)findViewById(R.id.connectButton);
 		Button resetButton = (Button)findViewById(R.id.resetButton);
-
+		final EditText inputQuery = (EditText)findViewById(R.id.query);
+		
 		connectButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				try {
-					String response = help.dbMakeQuery("SELECT * FROM users", "f");
-					display.setText(response);
+					String query = inputQuery.getText().toString();
+					new dbMakeQuery().execute(query, "f");
+					display.setText(results);
 				} catch (Exception e) {
-					display.setText("It failed.");
+					display.setText("Query failed.");
 				}
 			}
 		});
@@ -42,7 +46,7 @@ public class MainActivity extends ActionBarActivity {
 			}
 		});			
 	}
-	
+
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
