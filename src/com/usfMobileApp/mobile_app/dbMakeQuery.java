@@ -8,8 +8,7 @@ class dbMakeQuery extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
     	String result = "";
     	try {
-    		MainActivity.results = help.httpRequest(params[0], params[1]);
-    		result = MainActivity.results;
+    		result = help.httpRequest(params[0], params[1]);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -18,10 +17,7 @@ class dbMakeQuery extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPostExecute(String result) {
-        // TextView txt = (TextView) findViewById(R.id.output);
-        // txt.setText("Executed"); // txt.setText(result);
-        // might want to change "executed" for the returned string passed
-        // into onPostExecute() but that is upto you
+    	MainActivity.results = result;
     }
 
     @Override

@@ -77,8 +77,6 @@ public JSONObject getJSONFromUrl(String url) {
 
 }
 }
-
-// An example of how to use this stuff
 /*
 JSONParser jsonParser = new JSONParser();
 JSONObject object = jsonParser.getJSONFromUrl(url);
@@ -88,6 +86,7 @@ try {
 } catch (JSONException e) {
 	display.setText("It didn't work");
 	e.printStackTrace();
-}					
+}	
+
 */
 
