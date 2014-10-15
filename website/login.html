@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>Auto PT Login</title>
+
+  <link rel='stylesheet' href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
+
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+
+	<style>
+		.failure {
+			text-align: center;
+			margin-bottom: 20px;
+			font-family: 'Roboto', sans-serif;
+		}
+	</style>
+
+</head>
+
+<body>
+  <div class="login-card">
+  	 <img src="images/BigLogo.png" alt="logo">
+    <h1>Doctor Log-in</h1><br>
+
+    	<?php 
+    	if($_POST['logout'] == true) {
+    		session_destroy();
+    	}
+
+    	include 'includes.php';
+		if ($_POST) {
+			$user = $_POST['user'];
+			$pass = $_POST['password'];
+	
+			$query = "SELECT * FROM doctors WHERE username='$user' and password='$pass'";
+
+			$login = dbFetch($query);
+
+			if ($login[0]['id']) {
+				$_SESSION['doctor'] = $login[0];
+				newLocation('/home.html');
+			} else {
+				?>
+				<div class="failure">Login Failed</div>
+				<?
+			}
+		}  	
+	?>
+
+ 
+  <form method="post">
+    <input type="text" name="user" id="user" placeholder="Username">
+    <input type="password" name="password" id="password" placeholder="Password">
+    <input type="submit" name="login" class="login login-submit" value="login">
+  </form>
+
+  <div class="login-help">
+    <a href="http://usfandroidapp.net63.net/about.html" style="float:right">About</a>
+  </div>
+</div>
+
+  <script src='http://codepen.io/assets/libs/fullpage/jquery_and_jqueryui.js'></script>
+
+</body>
+
+</html>

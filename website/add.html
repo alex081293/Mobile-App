@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>Add Patient</title>
+
+  <link rel='stylesheet' href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
+
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+
+	<style>
+		.failure {
+			text-align: center;
+			margin-bottom: 20px;
+			font-family: 'Roboto', sans-serif;
+		}
+		.login-card {
+			width: 60%;
+		}
+	</style>
+
+</head>
+
+<body>
+  <div class="login-card">
+  	<?php include 'includes.php'; ?>
+    <h1>Welcome Dr. <? echo $_SESSION['doctor']['lastName']; ?></h1><br>
+
+    <? 
+    	$post = $_POST;
+    	$drId = $_SESSION['doctor']['id'];
+    	if ($post) {
+
+			$validation = validateUserData($post);
+			if ($validation['success'] == true) {
+
+				$firstName = $post['firstName'];
+				$lastName = $post['lastName'];
+				$injuryType = $post['injuryType'];
+				$injuryDetails = $post['injuryDetails'];
+				$age = $post['age'];
+				$avatar = $post['profileUrl'];
+				$email = $post['email'];
+				$phoneNumber = $post['phoneNumber'];
+
+				$query = "INSERT INTO patients (doctorId, firstName, lastName, injuryType, injuryDetails, age, email, phoneNumber, avatar) VALUES ('$drId', '$firstName', '$lastName', '$injuryType', '$injuryDetails', '$age', '$email', '$phoneNumber', '$avatar')";
+
+				$result = dbQuery($query);
+
+				if ($result['success'] == true) {
+					$query = "SELECT id, firstName, lastName FROM patients WHERE doctorId='$drId' ORDER BY id DESC LIMIT 1";
+					$patients = dbFetch($query);
+					
+					$newPid = $patients[0]['id'];
+					$token = generateToken($newPid);
+					
+					$query = "UPDATE patients SET loginToken='$token' WHERE id='$newPid'";
+					$result = dbQuery($query);
+					
+					$sFlag = "You have succesfully added patient " . $patients[0]['firstName'] . ' ' . $patients[0]['lastName'] . "\nYour patients login token is " . $token;
+
+				} else {
+					$eFlag = 'An error has occured. Please wait and try again later.';
+				}
+			} else {
+				$eFlag = 'Some of your data was not properly typed in. Please try again.';
+			}
+ 
+    	}
+    ?>
+	    <div class="input" style="width:60%; padding-left: 20%">
+	    	<div class="header" style="text-align:center"> <h2>New Patient Creation</h2> </div>
+
+	    	<? if ($eFlag != NULL) ?> 
+	    		<div class="warning" style="text-align:center"> <font color="red"><h3><? echo $eFlag; ?></h3></font></div><br>
+	    	<? if ($sFlag != NULL) { ?> 
+	    		<div class="success" style="text-align:center"> 
+	    			<font color="green"> 
+	    				<h3><? echo $sFlag; ?></h3>
+	    				You can view your patient <a href="<? echo $SERVER['HTTP_HOST'] . '/patients.html?id=' . $newPid; ?>"> here.</a>
+	    			</font>
+	    		</div>
+	    		<br>
+	    	<? } else { ?>
+	    	<form method="post">
+	    		First name*: <input type="text" name="firstName" style="width:30%; height:24px; float:right;"><br><br>
+				Last name*: <input type="text" name="lastName" style="width:30%; height:24px; float:right;"><br><br>
+				Date of Birth: <input type="date" name="age" value="0000-00-00" style="float:right;"><br><br>
+				Phone Number*: <input type="tel" name="phoneNumber" style="float:right;"><br><br>
+				Email*: <input type="email" name="email" style="float:right;"><br><br>
+				Injury*: <input type="text" name="injuryType" style="width:30%; height:24px; float:right;"><br><br>
+				Injury Details: <br><input type="text" name="injuryDetails" style="width:80%; height:24px;float:right;"><br><br>
+				Profile Picture (url): <br><input type="text" name="profileUrl" style="width:80%; height:24px;float:right;">
+				<br><br><br>
+
+				<input type="submit" name="add" class="login login-submit" value="submit">
+	    	</form>
+	    	<? } ?>
+	    	<a href="<? echo $SERVER['HTTP_HOST'].'/login.html?logout=true' ?>" style="float:right"> <b>Logout        </b> </a>        
+	    	<a href="<? echo $SERVER['HTTP_HOST'].'/home.html' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
+
+	    </div>
+
+</div>
+
+<!-- <div id="error"><img src="https://dl.dropboxusercontent.com/u/23299152/Delete-icon.png" /> Your caps-lock is on.</div> -->
+
+  <script src='http://codepen.io/assets/libs/fullpage/jquery_and_jqueryui.js'></script>
+
+</body>
+
+</html>

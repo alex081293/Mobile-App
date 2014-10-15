@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+  <?php include 'includes.php';?>
+ 
+  <link rel='stylesheet' href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
+
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+
+	<style>
+		.login-card {
+			width: 60%;
+		}
+		.mainContent {
+			padding: 25px 0px 30px 20px;
+			width:98%;
+		}
+		.notes {
+			height:400px;
+			word-wrap: break-word;
+			border:1px solid #ccc;
+			overflow:auto;
+		}
+		.notes2 {
+			height:400px;
+			word-wrap: break-word;
+			border:1px solid #ccc;
+			overflow:auto;
+		}		
+		.funcButtons {
+			height:152px;
+			width:315px;
+			font-size:22px;
+			color:white;
+		}
+		.workouts {
+			padding: 36px 0px 0px 30px;
+			float:left;
+			width:100%;
+			height: 900px;
+		}
+		.session {
+			width:94%;
+			height:37%;
+			padding-top:15px;
+			padding-right:15px;
+			padding-left:15px;
+			word-wrap: break-word;
+			border:1px solid #ccc;
+			overflow:auto;			
+		}
+	</style>
+</head>
+
+<body>
+  <div class="login-card">
+  	<h1>AutoPT</h1>
+    <h1>Welcome Dr. <? echo $_SESSION['doctor']['lastName']; ?></h1><br>
+
+    <? 
+    	$patientId = $_GET['id'];
+    	$patients = dbFetch("SELECT * FROM patients WHERE id='$patientId'");
+    	
+    	$patient = $patients[0];
+		$drId = $_SESSION['doctor']['id'];
+
+    	updateUnseenDrMsgs($drId, $patientId);
+
+    	if ($patient['doctorId'] != $drId) {
+    		newLocation('/404.html');
+    	}
+    ?>
+
+    <div class="pTable" style="padding-bottom:25px; padding-left:22%;">
+		<? generateTable($patient); ?>
+	</div>
+
+	<?
+    	if ($_POST['privateMessage']) {
+    		insertMessage($drId, $patientId, 1, $_POST['privateMessage']);
+    	}
+
+    	if ($_POST['clientMessage']) {
+    		insertMessage($drId, $patientId, 0, $_POST['clientMessage']);
+    	}
+
+    	if ($_POST['delete'] == "Delete Patient") {
+    		?>
+    		<form method="post">
+	    		<input type="submit" name="delete" class="login login-submit" value="Do Not Delete" style="width:20%;  background-color: blue;">
+	    		<input type="submit" name="delete" class="login login-submit" value="Confirm Deletion" style="width:20%;  background-color: red;">
+	  		</form>
+	  		<?
+    	} else if ($_POST['delete'] == 'Confirm Deletion') {
+			deletePatient($patientId);						
+			newLocation('/home.html');
+		} else { 
+
+   		 ?>
+		   	<div class="mainContent">
+			   	<div class="messages" stlye="width:100%; height:527px;">
+			   	  <div class="private" style="width:30%; float:left">
+					  <div class="notes">
+					  	<h2>Private Notes:</h2>
+					  	<?
+					  		$notes = getDrNotes($drId, $patientId);
+					  		if ($notes == NULL) {
+					  			echo "You have no private notes for this patient.";
+					  		} else {
+					  			foreach ($notes as $message) {
+					  				?> <b><?echo $message['time'] . ':    '?></b><? echo $message['message']; ?> <br><br> <?
+					  			}
+					  		}
+					  	?>
+					  </div>
+					  	<form id="privateForm" method="post">
+					     <textarea rows="4" cols="62" name="privateMessage" form="privateForm">New private note here...</textarea>
+					     <input type="submit" name="submit" class="login login-submit" value="Private Note" style="background-color: black;">
+					  </form>
+				  </div>
+				  <div class="options" style="float:left; width:33%; margin-left:3.5%;">
+					<form method="post">
+					    <input type="submit" name="delete" class="funcButtons" value="Assign Therapy Session" style="background-color: green;"><br>
+					    <input type="submit" name="delete" class="funcButtons" value="Edit Patient" style="background-color: blue;"><br>
+					    <input type="submit" name="delete" class="funcButtons" value="Delete Patient" style="background-color: red;">
+					  </form>	
+
+				  </div>			     
+			   	  <div class="public" style="width:30%; float:right;">
+					  <div class="notes2">
+					  	<h2>Client messages:</h2>
+					  	<b>KEY:<br><FONT COLOR=blue>You</FONT><br><FONT COLOR=red>Client</FONT><br><br></b>
+					  	<?
+					  		$notes = getClientMessages($drId, $patientId);
+					  		if ($notes == NULL) {
+					  			echo "You have no client messages with this patient.";
+					  		} else {
+					  			foreach ($notes as $message) {
+					  				if ($message['userType'] == 1) {
+					  					?> <b><FONT COLOR=red><?echo $message['time'] . ':    '?></b><? echo $message['message']; ?> </FONT><br><br> <?
+					  				} else {
+
+					  					?><b><FONT COLOR=blue><?echo $message['time'] . ':    '?></b><? echo $message['message']; ?> </FONT><br><br>  <?
+					  				}
+					  			}
+					  		}
+					  	?>
+					  </div>
+					  	<form id="theForm" method="post">
+					     <textarea rows="4" cols="62" name="clientMessage" form="theForm">Send client message here...</textarea>
+					     <input type="submit" name="submit" class="login login-submit" value="Client Message" style="background-color: black;">
+					  </form>
+				</div>	
+
+
+			</div>
+			<div class="workouts">
+				<h2>Past Therapy Sessions</h2><div class="completed session"></div><br>
+				<h2>Upcoming Therapy Sessions</h2><div class="upcoming session"></div>
+			</div>
+		<? } ?>
+		<br><br>
+		<a href="<? echo $SERVER['HTTP_HOST'].'/login.html?logout=true' ?>" style="float:right"> <b>Logout</b> </a> 
+    	<a href="<? echo $SERVER['HTTP_HOST'].'/home.html' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
+
+    </div>
+
+
+    	 <title>Patient <? echo $patient['lastName']; ?></title>
+</div>
+
+  <script src='http://codepen.io/assets/libs/fullpage/jquery_and_jqueryui.js'></script>
+
+</body>
+</html>

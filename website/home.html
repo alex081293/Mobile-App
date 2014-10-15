@@ -1,0 +1,93 @@
+-<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>AutoPT Home</title>
+
+  <link rel='stylesheet' href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
+
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+
+	<style>
+		.failure {
+			text-align: center;
+			margin-bottom: 20px;
+			font-family: 'Roboto', sans-serif;
+		}
+		.login-card {
+			width: 60%;
+		}
+		.users {
+			text-align: left;
+			width:27%;
+			height:300px;
+			float:left;
+			padding: 14px 10px 10px 49px;
+			border: 2px solid;
+    		border-radius: 25px;
+		}
+		.avatar {
+			float:right;
+		}
+	</style>
+
+</head>
+
+<body>
+  <div class="login-card">
+  	<?php include 'includes.php'; ?>
+  	<h1>AutoPT</h1>
+    <h1>Welcome Dr. <? echo $_SESSION['doctor']['lastName']; ?></h1><br>
+
+    <? 
+    	$drId = $_SESSION['doctor']['id'];
+    	if (is_null($drId)) {
+    		newLocation('/404.html');
+    	}
+    	$query = "SELECT * FROM patients WHERE doctorId='$drId'";
+    	$patients = dbFetch($query);
+    	if(!(empty($patients))) {
+	    	foreach ($patients as $patient) {
+				?>
+				<div class="users">
+					<b>Patient:</b> <? echo $patient['firstName']. ' ' . $patient['lastName']; ?> <br/>
+					<b>Injury:</b> <? echo $patient['injuryType']; ?> <br/>
+					<b>Age:</b> <? 
+						echo ($patient['age'] == '0000-00-00' || is_null($patient['age'])) ? 'N/A' : floor((time() - strtotime($patient['age'])) / (60*60*24*365));
+	 				?>	<br/>
+	 				
+	 				<?
+ 					$count = getUnseenDrMsgs($drId, $patient['id']);
+ 					if ($count>0) { ?> <font color=red> <? } ?>
+	 				<b>New Messages:</b> <? echo $count; ?>
+	 				<? if ($count>0) { ?> </font> <? } ?>
+	 				<br>
+	 				<a href="<? echo $SERVER['HTTP_HOST'].'/patients.html?id='.$patient['id'] ?>"> <b><font color='blue'>View Patient </font></b></a>
+					<div class="avatar">
+						<img src="<? echo ($patient['avatar']) ? $patient['avatar'] : $SERVER['HTTP_HOST'].'/images/default.jpg'; ?>"  alt="icon" style="width:185px;height:220px;padding-right:5px;">
+					</div>
+				</div>
+				<?    		
+	    	}
+	    }
+    ?>
+    	<div class="users">
+    		<a href="<? echo $SERVER['HTTP_HOST'].'/add.html' ?>"> <b>Create new patient</b> </a> 
+			<br/><br/><br/>
+    			<div class="avatar">
+					<img src="<? echo $SERVER['HTTP_HOST'].'/images/add.jpg'; ?>"  alt="icon" style="width:220px;height:220px;padding-right:5px;">
+				</div>
+		</div>
+		<a href="<? echo $SERVER['HTTP_HOST'].'/login.html?logout=true' ?>" style="float:right"> <b>Logout</b> </a> 
+</div>
+
+<!-- <div id="error"><img src="https://dl.dropboxusercontent.com/u/23299152/Delete-icon.png" /> Your caps-lock is on.</div> -->
+
+  <script src='http://codepen.io/assets/libs/fullpage/jquery_and_jqueryui.js'></script>
+
+</body>
+
+</html>
