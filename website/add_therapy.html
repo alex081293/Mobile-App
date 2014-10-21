@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>Create Therapy Session</title>
+
+  <link rel='stylesheet' href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
+
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+
+	<style>
+		.failure {
+			text-align: center;
+			margin-bottom: 20px;
+			font-family: 'Roboto', sans-serif;
+		}
+		.login-card {
+			width: 60%;
+		}
+	</style>
+
+</head>
+
+<body>
+  <div class="login-card">
+  	<?php include 'includes.php'; ?>
+    <h1>Welcome Dr. <? echo $_SESSION['doctor']['lastName']; ?></h1><br>
+
+    <? 
+    	$post = $_POST;
+    	$drId = $_SESSION['doctor']['id'];
+    	$pId = $_GET['p'];
+
+    	authenticate($pId, $drId);
+
+    	if ($post) {
+    		if ($post['tName']) $tName = $post['tName'];
+    		if ($post['directions']) $directons = $post['directions'];
+    		if ($post['video']) $url = $post['video'];
+
+    		$rate = $post['rate'];
+    		switch($rate) {
+    			case 'once':
+    				$nRate = 1;
+    				break;
+    			case 'daily':
+    				$nRate = 60*60*24;
+    				break;
+    			case 'biW':
+    				$nRate = 60*60*24*3;
+    				break;
+      			case 'weekly':
+    				$nRate = 60*60*24*7;
+    				break; 
+    			case 'biM':
+    				$nRate = 60*60*24*14;
+    				break; 				
+    		}
+ 		
+
+
+    	}
+    ?>
+	    <div class="input" style="width:60%; padding-left: 20%">
+	    	<div class="header" style="text-align:center"> <h2>New Therapy Session</h2> </div>
+
+	    	<? if ($eFlag != NULL) ?> 
+	    		<div class="warning" style="text-align:center"> <font color="red"><h3><? echo $eFlag; ?></h3></font></div><br>
+	    	<? if ($sFlag != NULL) { ?> 
+	    		<div class="success" style="text-align:center"> 
+	    			<font color="green"> 
+	    				<h3><? echo $sFlag; ?></h3>
+	    				You can view your patient <a href="<? echo $SERVER['HTTP_HOST'] . '/patients.html?id=' . $newPid; ?>"> here.</a>
+	    			</font>
+	    		</div>
+	    		<br>
+	    	<? } else { ?>
+	    	<form method="post" name="newTherapy">
+	    		Therapy Name*: <input type="text" name="tName" style="width:30%; height:24px; float:right;"><br><br>
+				Therapy Steps*: <textarea rows="4" cols="62" name="directions" form="newTherapy" style="float:right;">Enter Therapy Directions</textarea><br><br><br><br>
+				Rate of Activity*: <select name="rate" size="1" style="float:right;">
+								<option value="once">Once</option>
+								<option value="daily">Daily</option>
+								<option value="biW">Bi-Weekly</option>
+								<option value="weekly">Weekly</option>
+								<option value="biM">Bi-Monthly</option>
+							</select><br><br>
+				Starting Date: <input type="date" name="startingDate" value="0000-00-00" style="float:right;"><br><br>
+				Ending Date*: <input type="date" name="endingDate" value="0000-00-00" style="float:right;"><br><br>
+				Video URL: <input type="text" name="video" style="width:30%; height:24px; float:right;"><br><br>
+				<br><br><br>
+
+				<input type="submit" name="add" class="login login-submit" value="submit">
+	    	</form>
+	    	<? } ?>
+	    	<a href="<? echo $SERVER['HTTP_HOST'].'/login.html?logout=true' ?>" style="float:right"> <b>Logout        </b> </a>        
+	    	<a href="<? echo $SERVER['HTTP_HOST'].'/home.html' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
+	    	<a href="<? echo $SERVER['HTTP_HOST'].'/patients.html?id=' . $pId; ?>" style="float:right; padding-right:20px;"> <b>Go back to Patient</b> </a> 
+	    </div>
+
+</div>
+
+<!-- <div id="error"><img src="https://dl.dropboxusercontent.com/u/23299152/Delete-icon.png" /> Your caps-lock is on.</div> -->
+
+  <script src='http://codepen.io/assets/libs/fullpage/jquery_and_jqueryui.js'></script>
+
+</body>
+
+</html>

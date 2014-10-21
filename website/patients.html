@@ -62,16 +62,13 @@
 
     <? 
     	$patientId = $_GET['id'];
-    	$patients = dbFetch("SELECT * FROM patients WHERE id='$patientId'");
-    	
-    	$patient = $patients[0];
 		$drId = $_SESSION['doctor']['id'];
+		authenticate($patientId, $drId);
+
+    	$patients = dbFetch("SELECT * FROM patients WHERE id='$patientId'");
+    	$patient = $patients[0];
 
     	updateUnseenDrMsgs($drId, $patientId);
-
-    	if ($patient['doctorId'] != $drId) {
-    		newLocation('/404.html');
-    	}
     ?>
 
     <div class="pTable" style="padding-bottom:25px; padding-left:22%;">
@@ -85,6 +82,10 @@
 
     	if ($_POST['clientMessage']) {
     		insertMessage($drId, $patientId, 0, $_POST['clientMessage']);
+    	}
+
+    	if ($_POST['therapy'] == "Assign Therapy Session") {
+    		newLocation('/add_therapy.html?p='.$patientId);
     	}
 
     	if ($_POST['delete'] == "Delete Patient") {
@@ -123,7 +124,7 @@
 				  </div>
 				  <div class="options" style="float:left; width:33%; margin-left:3.5%;">
 					<form method="post">
-					    <input type="submit" name="delete" class="funcButtons" value="Assign Therapy Session" style="background-color: green;"><br>
+					    <input type="submit" name="therapy" class="funcButtons" value="Assign Therapy Session" style="background-color: green;"><br>
 					    <input type="submit" name="delete" class="funcButtons" value="Edit Patient" style="background-color: blue;"><br>
 					    <input type="submit" name="delete" class="funcButtons" value="Delete Patient" style="background-color: red;">
 					  </form>	

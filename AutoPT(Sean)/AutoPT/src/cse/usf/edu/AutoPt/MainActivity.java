@@ -69,8 +69,7 @@ public class MainActivity extends Activity
         super.onCreate(savedInstanceState);
         SharedPreferences thePrefs = getSharedPreferences(MY_APP_PREFS, 0);
         user.perscription = thePrefs.getInt("prescription", 0);
-        if(user.perscription == 0)
-        {
+        if(user.perscription == 0) {
         	setContentView(R.layout.firsttime);
         	
         }

@@ -115,5 +115,11 @@ function generateTable($patient) {
 	</table>';
 }
 
+function authenticate($pid, $dId) {
+	$query = "SELECT doctorId from patients where id='$pid'";
+	$returned = dbFetch($query);
+	if ($dId != $returned[0]['doctorId']) newLocation('/404.html');
+}
+
 
 ?>
