@@ -37,9 +37,9 @@
     	authenticate($pId, $drId);
 
     	if ($post) {
-    		if ($post['tName']) $tName = $post['tName'];
-    		if ($post['directions']) $directons = $post['directions'];
-    		if ($post['video']) $url = $post['video'];
+    		if ($post['tName']) $tName = $post['tName']; else $eFlag = "Sessions need a title";
+    		if ($post['directions']) $directions = $post['directions']; else $eFlag = "Sessions needs directions";
+    		$url = ($post['video']) ? $post['video'] : "";
 
     		$rate = $post['rate'];
     		switch($rate) {
@@ -59,9 +59,30 @@
     				$nRate = 60*60*24*14;
     				break; 				
     		}
- 		
+    		$today = strtotime(date('Y-m-d'));
+    		$current = strtotime($post['startingDate']);
+    		$endingTime = strtotime($post['endingDate']);
 
+    		if ($today > $endingTime && ($nRate != 1)) $eFlag = "The ending date must occur after today";
 
+    		if (!($eFlag)) {
+    			$sFlag = true;
+    			if ($nRate == 1) {
+	    			$day = date('Y-m-d 23:59:59', $current);    				
+    				$query = "INSERT INTO sessions (patientId, sessionName, notes, completed, url, time) VALUES ('$pId', '$tName', '$directions', '0', '$url', '$day')";
+	    			$result = dbQuery($query);
+	    			$sFlag = $result['success'];
+    			} else {
+    				while ($endingTime>$current) {
+    					$day = date('Y-m-d 12:00:00', $current);  
+		    			$query = "INSERT INTO sessions (patientId, notes, completed, url, time) VALUES ('$pId', '$directions', '0', '$url', '$day')";
+		    			$result = dbQuery($query);
+		    			$current = $current + $nRate;
+		    			$sFlag = ($result['success'] && $sFlag);
+	    			}
+	    			if (!$sFlag) $eFlag = "An error has occured. Please try again later";
+		    	}
+	    	}
     	}
     ?>
 	    <div class="input" style="width:60%; padding-left: 20%">
@@ -69,27 +90,29 @@
 
 	    	<? if ($eFlag != NULL) ?> 
 	    		<div class="warning" style="text-align:center"> <font color="red"><h3><? echo $eFlag; ?></h3></font></div><br>
-	    	<? if ($sFlag != NULL) { ?> 
+	    	<? if ($sFlag) { ?> 
 	    		<div class="success" style="text-align:center"> 
 	    			<font color="green"> 
-	    				<h3><? echo $sFlag; ?></h3>
-	    				You can view your patient <a href="<? echo $SERVER['HTTP_HOST'] . '/patients.html?id=' . $newPid; ?>"> here.</a>
+	    				<h3> Success! </h3>
+	    				You have succesfully added a therapy session for your patient. 
+	    				<a href="<? echo $SERVER['HTTP_HOST'] . '/patients.html?id=' . $pId; ?>"> View patient here.</a>
 	    			</font>
 	    		</div>
 	    		<br>
 	    	<? } else { ?>
-	    	<form method="post" name="newTherapy">
+	    	<form method="post" id="newTherapy">
 	    		Therapy Name*: <input type="text" name="tName" style="width:30%; height:24px; float:right;"><br><br>
 				Therapy Steps*: <textarea rows="4" cols="62" name="directions" form="newTherapy" style="float:right;">Enter Therapy Directions</textarea><br><br><br><br>
 				Rate of Activity*: <select name="rate" size="1" style="float:right;">
 								<option value="once">Once</option>
 								<option value="daily">Daily</option>
+								<option value="mf">Monday-Friday</option>
 								<option value="biW">Bi-Weekly</option>
 								<option value="weekly">Weekly</option>
 								<option value="biM">Bi-Monthly</option>
 							</select><br><br>
-				Starting Date: <input type="date" name="startingDate" value="0000-00-00" style="float:right;"><br><br>
-				Ending Date*: <input type="date" name="endingDate" value="0000-00-00" style="float:right;"><br><br>
+				Starting Date: <input type="date" name="startingDate" value="<? echo date('m/d/Y'); ?>" style="float:right;"><br><br>
+				Ending Date*: <input type="date" name="endingDate" value="<? echo date('m/d/Y'); ?>" style="float:right;"><br><br>
 				Video URL: <input type="text" name="video" style="width:30%; height:24px; float:right;"><br><br>
 				<br><br><br>
 

@@ -115,6 +115,67 @@ function generateTable($patient) {
 	</table>';
 }
 
+function generateCompletedTable($completedSessions) {
+	echo '<style type="text/css">
+		.tg  {border-collapse:collapse;border-spacing:0;}
+		.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+		.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+	</style>
+	<table class="tg" style="width:100%;">
+	  <tr>
+	    <th class="tg-031e">Session Name</th>
+	    <th class="tg-031e">Notes</th>
+	    <th class="tg-031e">Time Completed</th>
+	    <th class="tg-031e">Heart Rate</th>
+	    <th class="tg-031e">Breathing Rate</th>
+	    <th class="tg-031e">Activity Level</th>
+	    <th class="tg-031e">Posture</th>
+	    <th class="tg-031e">Temperature</th>
+	  </tr> ';
+	  foreach ($completedSessions as $sesh) {
+	 	echo '
+	 	<tr>
+		    <td class="tg-031e">' . $sesh['sessionName'] . '</td>
+		    <td class="tg-031e">' . $sesh['notes'] . '</td>
+		    <td class="tg-031e">' . $sesh['time'] . '</td>
+		    <td class="tg-031e">' . $sesh['heartRate'] . '</td>
+		    <td class="tg-031e">' . $sesh['breathingRate'] . '</td>
+		    <td class="tg-031e">' . $sesh['activityLevel'] . '</td>
+		    <td class="tg-031e">' . $sesh['posture'] . '</td>
+		    <td class="tg-031e">' . $sesh['temp'] . '</td>
+	    </tr>';
+	  }
+	echo '</table>';
+}
+
+function generateUpcomingTable($completedSessions) {
+	echo '<style type="text/css">
+		.tg  {border-collapse:collapse;border-spacing:0;}
+		.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+		.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+	</style>
+	<table class="tg" style="width:100%;">
+	  <tr>
+	    <th class="tg-031e">Session Name</th>
+	    <th class="tg-031e">Notes</th>
+	    <th class="tg-031e">Date to Completed</th>
+	    <th class="tg-031e">Video</th>
+	  </tr> ';
+	  foreach ($completedSessions as $sesh) {
+	 	echo '
+	 	<tr>
+		    <td class="tg-031e">' . $sesh['sessionName'] . '</td>
+		    <td class="tg-031e">' . $sesh['notes'] . '</td>
+		    <td class="tg-031e">' . $sesh['time'] . '</td>
+		    <td class="tg-031e">'; 
+		    	if ($sesh['url']) echo $sesh['url']; 
+			echo '</td>
+	    </tr>';
+	  }
+	echo '</table>';
+}
+
+
 function authenticate($pid, $dId) {
 	$query = "SELECT doctorId from patients where id='$pid'";
 	$returned = dbFetch($query);
