@@ -33,20 +33,11 @@ class dbMakeQuery extends AsyncTask<String, Void, String> {
     	
     	patientDetailActivity.results = result;
     	patient user = new patient("","",0);
-    	updateUser(user);
+    	
     	patientDetailActivity.loadComplete=true;
     	
     }
-    public void updateUser(patient user){
-		try{
-			JSONObject jsonObject = new JSONObject(patientDetailActivity.results);
-			user.firstName = jsonObject.getString("firstName");
-			user.lastName = jsonObject.getString("lastName");
-			user.perscription = jsonObject.getInt("loginToken");
-			patientDetailActivity.user = user;
-			//patientDetailActivity.loadComplete = true;
-		}catch(Exception e){e.printStackTrace();}
-    }
+    
     @Override
     protected void onPreExecute() {
     	

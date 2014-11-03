@@ -56,10 +56,10 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 
 		while (patientDetailActivity.loadComplete == false) {
 		}
-		
+		updateUser(user);
 		if (patientDetailActivity.user.perscription != 0) {
 			try {
-
+				
 				SharedPreferences thePrefs = getSharedPreferences(MY_APP_PREFS,
 						0);
 				SharedPreferences.Editor prefsEd = thePrefs.edit();
@@ -171,4 +171,14 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 			startActivity(detailIntent);
 		}
 	}
+	public void updateUser(patient user){
+		try{
+			JSONObject jsonObject = new JSONObject(patientDetailActivity.results);
+			user.firstName = jsonObject.getString("firstName");
+			user.lastName = jsonObject.getString("lastName");
+			user.perscription = jsonObject.getInt("loginToken");
+			patientDetailActivity.user = user;
+			//patientDetailActivity.loadComplete = true;
+		}catch(Exception e){e.printStackTrace();}
+    }
 }
