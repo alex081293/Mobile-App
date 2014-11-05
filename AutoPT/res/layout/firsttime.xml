@@ -4,42 +4,6 @@
     android:layout_height="match_parent" >
 
     <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="74dp"
-        android:layout_y="176dp"
-        android:text="Enter Prescription Key"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <EditText
-        android:id="@+id/key"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="54dp"
-        android:layout_y="210dp"
-        android:ems="10"
-        android:imeOptions="actionDone"
-        android:inputType="number"
-        android:maxLength="10"
-        android:singleLine="true" >
-		
-        <requestFocus />
-    </EditText>
-
-    <Button
-        android:id="@+id/submitBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="115dp"
-        android:layout_y="269dp"
-        android:focusableInTouchMode="false"
-        android:text="Submit" 
-        android:onClick="submitButtonClick"
-        
-      />
-
-    <TextView
         android:id="@+id/warningText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -47,6 +11,37 @@
         android:layout_y="360dp"
         
         
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <Button
+        android:id="@+id/submitBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="114dp"
+        android:layout_y="372dp"
+        android:focusableInTouchMode="false"
+        android:onClick="submitButtonClick"
+        android:text="Submit" />
+
+    <EditText
+        android:id="@+id/key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="56dp"
+        android:layout_y="322dp"
+        android:ems="10"
+        android:imeOptions="actionDone"
+        android:inputType="number"
+        android:maxLength="10"
+        android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_x="42dp"
+        android:layout_y="284dp"
+        android:text="Please Enter Prescription Key"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </AbsoluteLayout>

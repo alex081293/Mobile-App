@@ -67,24 +67,22 @@ public class patientDetailActivity extends Activity {
             case 3:
             	fragment = new AlertsFragment();
             	break;
+            case 4:
+            	fragment = new MessagesFragment();
+            	break;
            	case 5:
 	            fragment = new CalendarFragment();
 	            break;
            	case 6:
             	fragment = new AboutFragment();
             	break;
-           		default:fragment = new patientDetailFragment();
+           	default:
+           		fragment = new patientDetailFragment();
+           		break;
             }
             
-//            if(mItem.id =="4" || arguments.getString(patientDetailFragment.ARG_ITEM_ID) =="Calender" )
-//            {
-//            	
-//            }
-//            else fragment = new patientDetailFragment();
             fragment.setArguments(arguments);
-            getFragmentManager().beginTransaction()
-                    .add(R.id.patient_detail_container, fragment)
-                    .commit();
+            getFragmentManager().beginTransaction().add(R.id.patient_detail_container, fragment).commit();
         }
     }
 
