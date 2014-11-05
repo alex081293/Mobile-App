@@ -1,0 +1,93 @@
+-<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <link rel='stylesheet' href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
+
+    <link rel="stylesheet" href="css/style.css" media="screen" type="text/css" />
+
+	<style>
+		.failure {
+			text-align: center;
+			margin-bottom: 20px;
+			font-family: 'Roboto', sans-serif;
+		}
+		.login-card {
+			width: 60%;
+		}
+		.funcButtons {
+			height:152px;
+			font-size:22px;
+			color:white;
+			margin-right: 3%;
+			float: left;
+
+		}
+		.login-card input[type=submit] {
+			width: 30% !important;
+		}
+		.funcButtons:hover {
+			background-color:#D17081 !important;
+		}
+	</style>
+
+</head>
+
+<body>
+  <div class="login-card">
+  	<?php include 'includes.php'; ?>
+  	<h1>AutoPT</h1>
+    <h1>Welcome Dr. <? echo $_SESSION['doctor']['lastName']; ?></h1><br>
+	<h2>Therapy Selection</h2> <title>Create Session</title>
+    <? 
+    	$pId = $_GET['p'];
+    	$drId = $_SESSION['doctor']['id'];
+    	authenticate($pId, $drId);
+
+    	if ($_POST['injury'] == "Create new session") {
+    		newLocation('/add_therapy.html?p='.$pId);
+    	} else if ($_POST['injury']) {
+    		newLocation('/injury.html?p='.$pId.'&i='.$_POST['injury']);
+    	} else if ($_POST['therapy']) {
+    		newLocation('/add_therapy.html?p='.$pId.'&t='.$_POST['tId']);
+    	}
+
+    	if ($_GET['i']) {
+    		$iType = $_GET['i'];
+    		$query = "SELECT * FROM defaultSessions WHERE injuryType='$iType'";
+    	} else {
+    		$query = "SELECT DISTINCT injuryType FROM defaultSessions";
+    	}
+    	$injuries = dbFetch($query);
+    ?> 
+
+    <?
+    	foreach ($injuries as $injury) {
+    ?>
+        <form method="post">
+	    	<? if ($iType) { ?>
+	    		<input type="hidden" name="tId" value="<? echo $injury['id']; ?>">
+	    		<input type="submit" name="therapy" class="funcButtons a" value="<? echo $injury['injuryType'] . ' - ' . $injury['sessionName']; ?>" style="background-color: #B64952;">
+	    	<? } else { ?>
+	    		<input type="submit" name="injury" class="funcButtons a" value="<? echo $injury['injuryType']; ?>" style="background-color: #B64952;">
+	    	<? } ?>
+    	</form>
+    <? } ?>
+    	<form method="post">
+    		<input type="submit" name="injury" class="funcButtons a" value="Create new session" style="background-color: #B64952;">
+    	</form>
+		<a href="<? echo $SERVER['HTTP_HOST'].'/login.html?logout=true' ?>" style="float:right"> <b>Logout</b> </a> 
+		<a href="<? echo $SERVER['HTTP_HOST'].'/home.html' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
+    	<a href="<? echo $SERVER['HTTP_HOST'].'/patients.html?id=' . $pId; ?>" style="float:right; padding-right:20px;"> <b>Go back to Patient</b> </a> 
+</div>
+
+<!-- <div id="error"><img src="https://dl.dropboxusercontent.com/u/23299152/Delete-icon.png" /> Your caps-lock is on.</div> -->
+
+  <script src='http://codepen.io/assets/libs/fullpage/jquery_and_jqueryui.js'></script>
+
+</body>
+
+</html>

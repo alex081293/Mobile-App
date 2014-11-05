@@ -137,7 +137,7 @@ function generateCompletedTable($completedSessions) {
 	 	<tr>
 		    <td class="tg-031e">' . $sesh['sessionName'] . '</td>
 		    <td class="tg-031e">' . $sesh['notes'] . '</td>
-		    <td class="tg-031e">' . $sesh['time'] . '</td>
+		    <td class="tg-031e">' . date('F j, Y, g:i a', strtotime($sesh['time'])). '</td>
 		    <td class="tg-031e">' . $sesh['heartRate'] . '</td>
 		    <td class="tg-031e">' . $sesh['breathingRate'] . '</td>
 		    <td class="tg-031e">' . $sesh['activityLevel'] . '</td>
@@ -166,7 +166,7 @@ function generateUpcomingTable($completedSessions) {
 	 	<tr>
 		    <td class="tg-031e">' . $sesh['sessionName'] . '</td>
 		    <td class="tg-031e">' . $sesh['notes'] . '</td>
-		    <td class="tg-031e">' . $sesh['time'] . '</td>
+		    <td class="tg-031e">' . date('F j, Y', strtotime($sesh['time'])) . '</td>
 		    <td class="tg-031e">'; 
 		    	if ($sesh['url']) echo $sesh['url']; 
 			echo '</td>
@@ -180,6 +180,10 @@ function authenticate($pid, $dId) {
 	$query = "SELECT doctorId from patients where id='$pid'";
 	$returned = dbFetch($query);
 	if ($dId != $returned[0]['doctorId']) newLocation('/404.html');
+}
+
+function isNotWeekend($date) {
+    return (date('N', strtotime($date)) < 6);
 }
 
 
