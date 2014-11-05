@@ -5,7 +5,7 @@
 
   <meta charset="UTF-8">
 
-  <title>Add Patient</title>
+
 
   <link rel='stylesheet' href='http://codepen.io/assets/libs/fullpage/jquery-ui.css'>
 
@@ -32,6 +32,15 @@
     <? 
     	$post = $_POST;
     	$drId = $_SESSION['doctor']['id'];
+
+    	if ($_GET['p']) {
+    		$pId = $_GET['p'];
+    		authenticate($pId, $drId);
+    			
+    		$result = dbFetch("SELECT * from patients where id='$pId'");
+    		$patient = $result[0];
+    	}
+
     	if ($post) {
 
 			$validation = validateUserData($post);
@@ -46,6 +55,15 @@
 				$email = $post['email'];
 				$phoneNumber = $post['phoneNumber'];
 
+
+				if ($patient) {
+					$query = "UPDATE patients SET firstName='$firstName', lastName='$lastName', injuryType='$injuryType', injuryDetails='$injuryDetails', age='$age', phoneNumber='$phoneNumber', avatar='$avatar', email='$email' WHERE id='$pId'";
+
+					$result = dbQuery($query);
+					newLocation('/patients.html?id='.$pId);
+				}
+
+
 				$query = "INSERT INTO patients (doctorId, firstName, lastName, injuryType, injuryDetails, age, email, phoneNumber, avatar) VALUES ('$drId', '$firstName', '$lastName', '$injuryType', '$injuryDetails', '$age', '$email', '$phoneNumber', '$avatar')";
 
 				$result = dbQuery($query);
@@ -54,10 +72,10 @@
 					$query = "SELECT id, firstName, lastName FROM patients WHERE doctorId='$drId' ORDER BY id DESC LIMIT 1";
 					$patients = dbFetch($query);
 					
-					$newPid = $patients[0]['id'];
-					$token = generateToken($newPid);
+					$newpId = $patients[0]['id'];
+					$token = generateToken($newpId);
 					
-					$query = "UPDATE patients SET loginToken='$token' WHERE id='$newPid'";
+					$query = "UPDATE patients SET loginToken='$token' WHERE id='$newpId'";
 					$result = dbQuery($query);
 					
 					$sFlag = "You have succesfully added patient " . $patients[0]['firstName'] . ' ' . $patients[0]['lastName'] . "\nYour patients login token is " . $token;
@@ -72,7 +90,9 @@
     	}
     ?>
 	    <div class="input" style="width:60%; padding-left: 20%">
-	    	<div class="header" style="text-align:center"> <h2>New Patient Creation</h2> </div>
+	    	<div class="header" style="text-align:center"> 
+	    	<? if ($patient) { ?> <h2>Edit Patient</h2> <title>Edit Patient</title>
+	    	<? } else { ?> <h2>New Patient Creation</h2> <title>Add Patient</title><? } ?> </div> 
 
 	    	<? if ($eFlag != NULL) ?> 
 	    		<div class="warning" style="text-align:center"> <font color="red"><h3><? echo $eFlag; ?></h3></font></div><br>
@@ -80,27 +100,30 @@
 	    		<div class="success" style="text-align:center"> 
 	    			<font color="green"> 
 	    				<h3><? echo $sFlag; ?></h3>
-	    				You can view your patient <a href="<? echo $SERVER['HTTP_HOST'] . '/patients.html?id=' . $newPid; ?>"> here.</a>
+	    				You can view your patient <a href="<? echo $SERVER['HTTP_HOST'] . '/patients.html?id=' . $newpId; ?>"> here.</a>
 	    			</font>
 	    		</div>
 	    		<br>
 	    	<? } else { ?>
 	    	<form method="post">
-	    		First name*: <input type="text" name="firstName" style="width:30%; height:24px; float:right;"><br><br>
-				Last name*: <input type="text" name="lastName" style="width:30%; height:24px; float:right;"><br><br>
-				Date of Birth: <input type="date" name="age" value="0000-00-00" style="float:right;"><br><br>
-				Phone Number*: <input type="tel" name="phoneNumber" style="float:right;"><br><br>
-				Email*: <input type="email" name="email" style="float:right;"><br><br>
-				Injury*: <input type="text" name="injuryType" style="width:30%; height:24px; float:right;"><br><br>
-				Injury Details: <br><input type="text" name="injuryDetails" style="width:80%; height:24px;float:right;"><br><br>
-				Profile Picture (url): <br><input type="text" name="profileUrl" style="width:80%; height:24px;float:right;">
+	    		First name*: <input type="text" name="firstName" value="<? echo ($patient) ? $patient['firstName'] : "" ?>"style="width:30%; height:24px; float:right;"><br><br>
+				Last name*: <input type="text" name="lastName" value="<? echo ($patient) ? $patient['lastName'] : "" ?>" style="width:30%; height:24px; float:right;"><br><br>
+				Date of Birth: <input type="date" name="age" value="<? echo ($patient) ? $patient['age'] : "" ?>" style="float:right;"><br><br>
+				Phone Number*: <input type="tel" name="phoneNumber" value="<? echo ($patient) ? $patient['phoneNumber'] : "" ?>" style="float:right;"><br><br>
+				Email*: <input type="email" name="email" value="<? echo ($patient) ? $patient['email'] : "" ?>" style="float:right;"><br><br>
+				Injury*: <input type="text" name="injuryType" value="<? echo ($patient) ? $patient['injuryType'] : "" ?>" style="width:30%; height:24px; float:right;"><br><br>
+				Injury Details: <br><input type="text" name="injuryDetails" value="<? echo ($patient) ? $patient['injuryDetails'] : "" ?>" style="width:80%; height:24px;float:right;"><br><br>
+				Profile Picture (url): <br><input type="text" name="profileUrl" value="<? echo ($patient) ? $patient['avatar'] : "" ?>" style="width:80%; height:24px;float:right;">
 				<br><br><br>
 
-				<input type="submit" name="add" class="login login-submit" value="submit">
+				<? if ($patient) { ?> <input type="submit" name="update" class="login login-submit" value="submit">
+				<? } else { ?> <input type="submit" name="add" class="login login-submit" value="submit"> <? } ?>
 	    	</form>
 	    	<? } ?>
+	    	
 	    	<a href="<? echo $SERVER['HTTP_HOST'].'/login.html?logout=true' ?>" style="float:right"> <b>Logout        </b> </a>        
 	    	<a href="<? echo $SERVER['HTTP_HOST'].'/home.html' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
+	    	<? if ($patient) { ?> <a href="<? echo $SERVER['HTTP_HOST'].'/patients.html?id=' . $pId; ?>" style="float:right; padding-right:20px;"> <b>Go back to Patient</b> </a> <? } ?>
 
 	    </div>
 

@@ -52,6 +52,10 @@
 			border:1px solid #ccc;
 			overflow:auto;			
 		}
+		.a:hover {background-color: #007A29 !important;}
+		.b:hover {background-color: #1919AC !important;}
+		.c:hover {background-color: #CC0000 !important;}
+		.messages:hover {background-color: white !important; color: black !important; border:1px solid #ccc;}
 	</style>
 </head>
 
@@ -91,6 +95,10 @@
     		newLocation('/add_therapy.html?p='.$pId);
     	}
 
+    	if ($_POST['edit'] == "Edit Patient") {
+    		newLocation('/add.html?p='.$pId);
+    	}
+
     	if ($_POST['delete'] == "Delete Patient") {
     		?>
     		<form method="post">
@@ -122,14 +130,14 @@
 					  </div>
 					  	<form id="privateForm" method="post">
 					     <textarea rows="4" cols="62" name="privateMessage" form="privateForm">New private note here...</textarea>
-					     <input type="submit" name="submit" class="login login-submit" value="Private Note" style="background-color: black;">
+					     <input type="submit" name="submit" class="login login-submit messages" value="Private Note" style="background-color: black;">
 					  </form>
 				  </div>
 				  <div class="options" style="float:left; width:33%; margin-left:3.5%;">
 					<form method="post">
-					    <input type="submit" name="therapy" class="funcButtons" value="Assign Therapy Session" style="background-color: green;"><br>
-					    <input type="submit" name="delete" class="funcButtons" value="Edit Patient" style="background-color: blue;"><br>
-					    <input type="submit" name="delete" class="funcButtons" value="Delete Patient" style="background-color: red;">
+					    <input type="submit" name="therapy" class="funcButtons a" value="Assign Therapy Session" style="background-color: #009933;"><br>
+					    <input type="submit" name="edit" class="funcButtons b" value="Edit Patient" style="background-color: 	#3333B5;"><br>
+					    <input type="submit" name="delete" class="funcButtons c" value="Delete Patient" style="background-color: #FF0000;">
 					  </form>	
 
 				  </div>			     
@@ -155,7 +163,7 @@
 					  </div>
 					  	<form id="theForm" method="post">
 					     <textarea rows="4" cols="62" name="clientMessage" form="theForm">Send client message here...</textarea>
-					     <input type="submit" name="submit" class="login login-submit" value="Client Message" style="background-color: black;">
+					     <input type="submit" name="submit" class="login login-submit messages" value="Client Message" style="background-color: black;">
 					  </form>
 				</div>	
 

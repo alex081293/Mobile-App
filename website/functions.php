@@ -2,7 +2,7 @@
 	
 function newLocation($location) {
 	$host = $_SERVER['HTTP_HOST'];
-	header("Location: http://" . $host . $location);
+	header("Location: http://" . $host . $location); die;
 }
 
 
