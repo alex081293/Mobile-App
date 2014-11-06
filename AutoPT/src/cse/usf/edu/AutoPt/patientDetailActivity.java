@@ -51,10 +51,7 @@ public class patientDetailActivity extends Activity {
             Bundle arguments = new Bundle();
             
             Menu.MenuItem mItem = Menu.ITEM_MAP.get(getIntent().getStringExtra(patientDetailFragment.ARG_ITEM_ID));
-            
-            
-            
-   
+
             arguments.putString(patientDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(patientDetailFragment.ARG_ITEM_ID));
             
             switch(Integer.parseInt(mItem.id)){
@@ -95,7 +92,6 @@ public class patientDetailActivity extends Activity {
             // more details, see the Navigation pattern on Android Design:
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
-            //
             navigateUpTo(new Intent(this, MainActivity.class));
             return true;
         }
