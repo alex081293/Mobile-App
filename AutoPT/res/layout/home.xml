@@ -20,4 +20,12 @@
         android:layout_y="124dp"
         android:text="Button" />
 
+    <Button
+        android:id="@+id/btnExercise"
+        android:layout_width="292dp"
+        android:layout_height="wrap_content"
+        android:layout_x="15dp"
+        android:layout_y="391dp"
+        android:text="To Exercise Activity" />
+
 </AbsoluteLayout>

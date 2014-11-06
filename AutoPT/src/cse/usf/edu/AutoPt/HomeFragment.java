@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
+import android.content.Intent;
 import cse.usf.edu.AutoPt.HelperFunctions;
 import cse.usf.edu.AutoPt.dbMakeQuery;
 import cse.usf.edu.AutoPt.dummy.Menu;
@@ -41,6 +41,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         Button upButton = (Button) rootView.findViewById(R.id.homeBtn);
         upButton.setOnClickListener(this);
 
+        Button btnExercise = (Button) rootView.findViewById(R.id.btnExercise);
+        btnExercise.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+            	Intent exerciseIntent = new Intent(getActivity(), ExerciseActivity.class);
+	        	startActivity(exerciseIntent);
+            }
+
+        });
 		    
 
         return rootView;

@@ -51,7 +51,10 @@ public class patientDetailActivity extends Activity {
             Bundle arguments = new Bundle();
             
             Menu.MenuItem mItem = Menu.ITEM_MAP.get(getIntent().getStringExtra(patientDetailFragment.ARG_ITEM_ID));
-
+            
+            
+            
+   
             arguments.putString(patientDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(patientDetailFragment.ARG_ITEM_ID));
             
             switch(Integer.parseInt(mItem.id)){
@@ -64,22 +67,24 @@ public class patientDetailActivity extends Activity {
             case 3:
             	fragment = new AlertsFragment();
             	break;
-            case 4:
-            	fragment = new MessagesFragment();
-            	break;
            	case 5:
 	            fragment = new CalendarFragment();
 	            break;
            	case 6:
             	fragment = new AboutFragment();
             	break;
-           	default:
-           		fragment = new patientDetailFragment();
-           		break;
+           		default:fragment = new patientDetailFragment();
             }
             
+//            if(mItem.id =="4" || arguments.getString(patientDetailFragment.ARG_ITEM_ID) =="Calender" )
+//            {
+//            	
+//            }
+//            else fragment = new patientDetailFragment();
             fragment.setArguments(arguments);
-            getFragmentManager().beginTransaction().add(R.id.patient_detail_container, fragment).commit();
+            getFragmentManager().beginTransaction()
+                    .add(R.id.patient_detail_container, fragment)
+                    .commit();
         }
     }
 
@@ -92,6 +97,7 @@ public class patientDetailActivity extends Activity {
             // more details, see the Navigation pattern on Android Design:
             //
             // http://developer.android.com/design/patterns/navigation.html#up-vs-back
+            //
             navigateUpTo(new Intent(this, MainActivity.class));
             return true;
         }
