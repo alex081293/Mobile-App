@@ -6,13 +6,15 @@ public class patient {
 
 	public String firstName;
 	public String lastName;
-	public int perscription;
+	public int perscription, drId, pId;
 	
 	public patient(){}
-	public patient(String firstName, String lastName, int i) {
+	public patient(String firstName, String lastName, int i, int drId, int pId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.perscription = i;
+        this.drId = drId;
+        this.pId = pId;
     }
 	
 	

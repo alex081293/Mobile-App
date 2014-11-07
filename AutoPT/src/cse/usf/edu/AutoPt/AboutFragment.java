@@ -30,9 +30,6 @@ public class AboutFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.about, container, false);
 
-        // Show the dummy content as text in a TextView.
-        
-
         return rootView;
     }
 

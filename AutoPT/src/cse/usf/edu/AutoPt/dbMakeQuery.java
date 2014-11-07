@@ -32,7 +32,7 @@ class dbMakeQuery extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String result) {
     	
     	patientDetailActivity.results = result;
-    	patient user = new patient("","",0);
+    	patient user = new patient("","",0,0,0);
     	
     	patientDetailActivity.loadComplete=true;
     	

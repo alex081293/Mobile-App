@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 
@@ -25,7 +26,7 @@ import cse.usf.edu.AutoPt.MainActivity;
 public class patientDetailActivity extends Activity {
 
 	public static String results;
-	public static patient user = new patient("","",0);
+	public static patient user = new patient("","",0,0,0);
 	public static boolean loadComplete = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,7 @@ public class patientDetailActivity extends Activity {
         }
     }
 
-    @Override
+    @SuppressLint("NewApi") @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {

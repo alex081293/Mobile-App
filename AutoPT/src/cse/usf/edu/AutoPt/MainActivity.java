@@ -108,7 +108,7 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 
 	private boolean mTwoPane;
 
-	public patient user = new patient("", "", 0);
+	public patient user = new patient("", "", 0, 0, 0);
 	public static final String MY_APP_PREFS = "MyAppPrefs";
 
 	@Override
@@ -177,6 +177,8 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 			user.firstName = jsonObject.getString("firstName");
 			user.lastName = jsonObject.getString("lastName");
 			user.perscription = jsonObject.getInt("loginToken");
+			user.pId = jsonObject.getInt("Id");
+			user.drId = jsonObject.getInt("doctorId");
 			patientDetailActivity.user = user;
 			//patientDetailActivity.loadComplete = true;
 		}catch(Exception e){e.printStackTrace();}
