@@ -40,7 +40,7 @@ public class HelperFunctions {
 
 	// Sends a request to our web server with the query in the param and the type of query
 	public String httpRequest(String query, String type) throws Exception {
-		String url = "http://usfandroidapp.net63.net/mysqlConnect.php?t=" + type + "&q=" +  URLEncoder.encode(query, "UTF-8");		
+		String url = "http://usfandroidapp.net63.net/mysqlConnect.php?q=" +  URLEncoder.encode(query, "UTF-8") + "&t=" + type;		
 		HttpClient httpclient = new DefaultHttpClient();
 		HttpGet request = new HttpGet();
 		URI website = new URI(url);

@@ -58,8 +58,7 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 
 		new dbMakeQuery().execute(query, "f");
 
-		while (patientDetailActivity.loadComplete == false) {
-		}
+		while (patientDetailActivity.loadComplete == false) {}
 		updateUser(user);
 		if (patientDetailActivity.user.perscription != 0) {
 			try {
@@ -126,15 +125,14 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 		super.onCreate(savedInstanceState);
 		SharedPreferences thePrefs = getSharedPreferences(MY_APP_PREFS, 0);
 		user.perscription = thePrefs.getInt("prescription", 0);
+		user.drId = thePrefs.getInt("drId", 0);
+		user.pId = thePrefs.getInt("pId", 0);
 
 		if (user.perscription == 0) {
 			setContentView(R.layout.firsttime);
-
 		} else {
-
 			String query = "select * from patients where loginToken="
 					+ thePrefs.getInt("prescription", 0);
-
 			new dbMakeQuery().execute(query, "f");
 
 			setContentView(R.layout.activity_patient_list);

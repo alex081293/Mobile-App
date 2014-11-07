@@ -30,26 +30,28 @@ public class MessagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View messagesView = inflater.inflate(R.layout.messages, container, false);
-    	System.out.println(pId);
-    	System.out.println(drId);
-     /*
-        final EditText messageContent = (EditText)getView().findViewById(R.id.messageContent);
-		Button sendMessageBtn = (Button)getView().findViewById(R.id.sendMessageBtn);
+       
+        
+        final EditText messageContent = (EditText)messagesView.findViewById(R.id.messageBodyField);
+		Button sendMessageBtn = (Button)messagesView.findViewById(R.id.sendButton);
 
 		sendMessageBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				try {
 					String message = messageContent.getText().toString();
+					System.out.println(message);
 					String query = "INSERT INTO messages " +
 							"(userId, userType, patient, message, private, time) " +
-							"VALUES(" + drId + ", '0', '" + pId + "', '" + message + ", '0', NOW())";
+							"VALUES('" + drId + "', '0', '" + pId + "', '" + message + "', '0', NOW())";
+					System.out.println(query);
 					String response = help.httpRequest(query, "i");
+					System.out.println(response);
 				} catch (Exception e) {
 					
 				}
 			}
 		});
-     */
+ 
         return messagesView;
     }
     

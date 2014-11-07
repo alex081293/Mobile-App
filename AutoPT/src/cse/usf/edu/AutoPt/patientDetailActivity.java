@@ -3,6 +3,7 @@ package cse.usf.edu.AutoPt;
 import org.json.JSONObject;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -27,11 +28,13 @@ public class patientDetailActivity extends Activity {
 
 	public static String results;
 	public static patient user = new patient("","",0,0,0);
+
 	public static boolean loadComplete = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_detail);
+
 
         // Show the Up button in the action bar.
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -52,9 +55,7 @@ public class patientDetailActivity extends Activity {
             Bundle arguments = new Bundle();
             
             Menu.MenuItem mItem = Menu.ITEM_MAP.get(getIntent().getStringExtra(patientDetailFragment.ARG_ITEM_ID));
-            
-            
-            
+ 
    
             arguments.putString(patientDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(patientDetailFragment.ARG_ITEM_ID));
             
