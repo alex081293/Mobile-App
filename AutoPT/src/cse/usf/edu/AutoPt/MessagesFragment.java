@@ -30,8 +30,9 @@ public class MessagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View messagesView = inflater.inflate(R.layout.messages, container, false);
-        
-       
+    	System.out.println(pId);
+    	System.out.println(drId);
+     /*
         final EditText messageContent = (EditText)getView().findViewById(R.id.messageContent);
 		Button sendMessageBtn = (Button)getView().findViewById(R.id.sendMessageBtn);
 
@@ -48,7 +49,7 @@ public class MessagesFragment extends Fragment {
 				}
 			}
 		});
-        
+     */
         return messagesView;
     }
     
@@ -62,7 +63,7 @@ public class MessagesFragment extends Fragment {
     	
     	return results;
     }
-    
+ 
     
 
 }

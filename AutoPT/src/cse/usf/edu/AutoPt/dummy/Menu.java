@@ -25,24 +25,13 @@ public class Menu {
 
     static {
         // Add 3 sample items.
-        addItem(new MenuItem("1", "Home", "http://www.google.com" ));
-        addItem(new MenuItem("2", "Therapy Sessions", "http://www.google.com"));
-        addItem(new MenuItem("3", "Alerts", "http://www.google.com"));
+        addItem(new MenuItem("1", "Home", "" ));
+        addItem(new MenuItem("2", "Therapy Sessions", ""));
+        addItem(new MenuItem("3", "Alerts", ""));
         addItem(new MenuItem("4", "Messages",""));
-        addItem(new MenuItem("5", "Calender", "http://www.google.com"));
-        addItem(new MenuItem("6", "About", "http://www.google.com" ));
-        
-//        addItem(new MenuItem("6", "Sessions", "http://www.google.com"));
-//        addItem(new MenuItem("7", "Alerts", "http://www.google.com"));
-//        addItem(new MenuItem("8", "Calender", "http://www.google.com"));
-//        addItem(new MenuItem("9", "Home", "http://www.google.com" ));
-//        addItem(new MenuItem("10", "Sessions", "http://www.google.com"));
-//        addItem(new MenuItem("11", "Alerts", "http://www.google.com"));
-//        addItem(new MenuItem("12", "Calender", "http://www.google.com"));
-//        addItem(new MenuItem("13", "Home", "http://www.google.com" ));
-//        addItem(new MenuItem("14", "Sessions", "http://www.google.com"));
-//        addItem(new MenuItem("15", "Alerts", "http://www.google.com"));
-//        addItem(new MenuItem("16", "Calender", "http://www.google.com"));
+        addItem(new MenuItem("5", "Calender", ""));
+        addItem(new MenuItem("6", "About", "" ));
+       
     }
 
     private static void addItem(MenuItem item) {

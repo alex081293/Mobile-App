@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -18,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.graphics.Color;
 import android.widget.PopupWindow;
 
@@ -87,24 +91,26 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 			
 			LayoutInflater layoutInflater = (LayoutInflater) getBaseContext()
 					.getSystemService(LAYOUT_INFLATER_SERVICE);
+			
 			View popupView = layoutInflater.inflate(R.layout.loading, null);
+			
 			final PopupWindow popupWindow = new PopupWindow(popupView,
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			
 			// popupWindow.showAsDropDown(submitBtn, 50, -30);
 			popupWindow.showAtLocation(getCurrentFocus(), Gravity.CENTER, 0, 0);
 			Button btnDismiss = (Button) popupView.findViewById(R.id.dismiss);
+			
 			btnDismiss.setOnClickListener(new Button.OnClickListener() {
 
 				@Override
 				public void onClick(View v) {
 			    	switch(v.getId()){
-			        case R.id.dismiss:
-			        	popupWindow.dismiss();
-			        break;
-			    } 
-					
+				        case R.id.dismiss:
+				        	popupWindow.dismiss();
+				        break;
+			    	} 	
 				}
-				
 			});
 		}
 
@@ -135,10 +141,6 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 
 		}
 		if (findViewById(R.id.patient_detail_container) != null) {
-			// The detail container view will be present only in the
-			// large-screen layouts (res/values-large and
-			// res/values-sw600dp). If this view is present, then the
-			// activity should be in two-pane mode.
 			mTwoPane = true;
 
 			// In two-pane mode, list items should be given the
@@ -147,13 +149,33 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 					R.id.patient_list)).setActivateOnItemClick(true);
 		}
 
-		// TODO: If exposing deep links into your app, handle intents here.
+		
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.smalllogo)
+                .setContentTitle("New Message")
+                .setContentText("Hello World!");
+        
+        // Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, patientDetailActivity.class);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        // Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(patientDetailActivity.class);
+        // Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                    0,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(1, mBuilder.build());	 
 	}
 
-	/**
-	 * Callback method from {@link MainFragment.Callbacks} indicating that the
-	 * item with the given ID was selected.
-	 */
 	@Override
 	public void onItemSelected(String id) {
 		if (mTwoPane) {
@@ -175,6 +197,7 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 			startActivity(detailIntent);
 		}
 	}
+	
 	public void updateUser(patient user){
 		try{
 			JSONObject jsonObject = new JSONObject(patientDetailActivity.results);
@@ -184,7 +207,6 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 			user.pId = jsonObject.getInt("id");
 			user.drId = jsonObject.getInt("doctorId");
 			patientDetailActivity.user = user;
-			//patientDetailActivity.loadComplete = true;
-		}catch(Exception e){e.printStackTrace();}
+		}catch(Exception e){e.printStackTrace();}	
     }
 }

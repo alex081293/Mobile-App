@@ -59,29 +59,28 @@ public class patientDetailActivity extends Activity {
             arguments.putString(patientDetailFragment.ARG_ITEM_ID, getIntent().getStringExtra(patientDetailFragment.ARG_ITEM_ID));
             
             switch(Integer.parseInt(mItem.id)){
-            case 1:
-            	fragment = new HomeFragment();
-            	break;
-            case 2:
-            	fragment = new SessionsFragment();
-            	break;
-            case 3:
-            	fragment = new AlertsFragment();
-            	break;
-           	case 5:
-	            fragment = new CalendarFragment();
-	            break;
-           	case 6:
-            	fragment = new AboutFragment();
-            	break;
-           		default:fragment = new patientDetailFragment();
+	            case 1:
+	            	fragment = new HomeFragment();
+	            	break;
+	            case 2:
+	            	fragment = new SessionsFragment();
+	            	break;
+	            case 3:
+	            	fragment = new AlertsFragment();
+	            	break;
+	            case 4:
+	            	fragment = new MessagesFragment();
+	            	break;
+	           	case 5:
+		            fragment = new CalendarFragment();
+		            break;
+	           	case 6:
+	            	fragment = new AboutFragment();
+	            	break;
+	           	default:fragment = new patientDetailFragment();
+	           	break;
             }
             
-//            if(mItem.id =="4" || arguments.getString(patientDetailFragment.ARG_ITEM_ID) =="Calender" )
-//            {
-//            	
-//            }
-//            else fragment = new patientDetailFragment();
             fragment.setArguments(arguments);
             getFragmentManager().beginTransaction()
                     .add(R.id.patient_detail_container, fragment)

@@ -7,5 +7,10 @@
     <string name="title_activity_exercise">ExerciseActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="exercise_header">Exercise Header</string>
-
+    <string name="login_activity_label">Sinch Messaging Tutorial</string>
+    <string name="username">USERNAME</string>
+    <string name="password">PASSWORD</string>
+    <string name="message_elipses">Message..</string>
+    
+    
 </resources>
