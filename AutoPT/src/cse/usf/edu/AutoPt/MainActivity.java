@@ -72,6 +72,10 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 						patientDetailActivity.user.lastName);
 				prefsEd.putInt("prescription",
 						patientDetailActivity.user.perscription);
+				prefsEd.putInt("drId",
+						patientDetailActivity.user.drId);
+				prefsEd.putInt("pId",
+						patientDetailActivity.user.pId);
 				prefsEd.commit();
 
 				setContentView(R.layout.activity_patient_list);
@@ -177,7 +181,7 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 			user.firstName = jsonObject.getString("firstName");
 			user.lastName = jsonObject.getString("lastName");
 			user.perscription = jsonObject.getInt("loginToken");
-			user.pId = jsonObject.getInt("Id");
+			user.pId = jsonObject.getInt("id");
 			user.drId = jsonObject.getInt("doctorId");
 			patientDetailActivity.user = user;
 			//patientDetailActivity.loadComplete = true;
