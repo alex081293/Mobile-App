@@ -14,6 +14,8 @@ import cse.usf.edu.AutoPt.dummy.Menu;
 
 public class MessagesFragment extends Fragment {
 	HelperFunctions help = new HelperFunctions();
+	int drId = patientDetailActivity.user.drId;
+	int pId = patientDetailActivity.user.pId;
 	/**
 	 * @param args
 	 */
@@ -23,8 +25,6 @@ public class MessagesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        
     }
 
     @Override
@@ -38,14 +38,10 @@ public class MessagesFragment extends Fragment {
 		sendMessageBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				try {
-					// Where is this stuff stored
-					// Need to get drId
-					// Need to get patient ID
-					
 					String message = messageContent.getText().toString();
 					String query = "INSERT INTO messages " +
 							"(userId, userType, patient, message, private, time) " +
-							"VALUES(" + patientDetailActivity.user.drId + ", '0', '" + patientDetailActivity.user.pId + "', '" + message + ", '0', NOW())";
+							"VALUES(" + drId + ", '0', '" + pId + "', '" + message + ", '0', NOW())";
 					String response = help.httpRequest(query, "i");
 				} catch (Exception e) {
 					
@@ -56,12 +52,16 @@ public class MessagesFragment extends Fragment {
         return messagesView;
     }
     
-//    private String getMessages() {
-//    	String query = "SELECT * FROM messages WHERE (userId='" + pId + "' and userType='0')" +
-//    			"OR (userId='" + drId + "' and userType='0' and patient='" + pId + "'" +
-//    			"ORDER BY time DESC";
-//    	String results = help.httpRequest(query, "f");
-//    }
+    private String getMessages() throws Exception {
+    	String query = "SELECT * FROM messages WHERE (userId='" + pId + "' and userType='0')" +
+    			"OR (userId='" + drId + "' and userType='0' and patient='" + pId + "'" +
+    			"ORDER BY time DESC";
+    	String results;
+		
+    	results = help.httpRequest(query, "f");
+    	
+    	return results;
+    }
     
     
 
