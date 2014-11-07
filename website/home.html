@@ -45,7 +45,7 @@
     <? 
     	$drId = $_SESSION['doctor']['id'];
     	if (is_null($drId)) {
-    		newLocation('/404.html');
+    		newLocation('/404');
     	}
     	$query = "SELECT * FROM patients WHERE doctorId='$drId'";
     	$patients = dbFetch($query);
@@ -65,7 +65,7 @@
 	 				<b>New Messages:</b> <? echo $count; ?>
 	 				<? if ($count>0) { ?> </font> <? } ?>
 	 				<br>
-	 				<a href="<? echo $SERVER['HTTP_HOST'].'/patients.html?id='.$patient['id'] ?>"> <b><font color='blue'>View Patient </font></b></a>
+	 				<a href="<? echo $SERVER['HTTP_HOST'].'/patients?id='.$patient['id'] ?>"> <b><font color='blue'>View Patient </font></b></a>
 					<div class="avatar">
 						<img src="<? echo ($patient['avatar']) ? $patient['avatar'] : $SERVER['HTTP_HOST'].'/images/default.jpg'; ?>"  alt="icon" style="width:185px;height:220px;padding-right:5px;">
 					</div>
@@ -75,13 +75,13 @@
 	    }
     ?>
     	<div class="users">
-    		<a href="<? echo $SERVER['HTTP_HOST'].'/add.html' ?>"> <b>Create new patient</b> </a> 
+    		<a href="<? echo $SERVER['HTTP_HOST'].'/add' ?>"> <b>Create new patient</b> </a> 
 			<br/><br/><br/>
     			<div class="avatar">
 					<img src="<? echo $SERVER['HTTP_HOST'].'/images/add.jpg'; ?>"  alt="icon" style="width:220px;height:220px;padding-right:5px;">
 				</div>
 		</div>
-		<a href="<? echo $SERVER['HTTP_HOST'].'/login.html?logout=true' ?>" style="float:right"> <b>Logout</b> </a> 
+		<a href="<? echo $SERVER['HTTP_HOST'].'/login?logout=true' ?>" style="float:right"> <b>Logout</b> </a> 
 </div>
 
 <!-- <div id="error"><img src="https://dl.dropboxusercontent.com/u/23299152/Delete-icon.png" /> Your caps-lock is on.</div> -->

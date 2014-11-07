@@ -92,11 +92,11 @@
     	}
 
     	if ($_POST['therapy'] == "Assign Therapy Session") {
-    		newLocation('/injury.html?p='.$pId);
+    		newLocation('/injury?p='.$pId);
     	}
 
     	if ($_POST['edit'] == "Edit Patient") {
-    		newLocation('/add.html?p='.$pId);
+    		newLocation('/add?p='.$pId);
     	}
 
     	if ($_POST['delete'] == "Delete Patient") {
@@ -108,7 +108,7 @@
 	  		<?
     	} else if ($_POST['delete'] == 'Confirm Deletion') {
 			deletePatient($pId);						
-			newLocation('/home.html');
+			newLocation('/home');
 		} else { 
 
    		 ?>
@@ -187,8 +187,8 @@
 			</div>
 		<? } ?>
 		<br><br>
-		<a href="<? echo $SERVER['HTTP_HOST'].'/login.html?logout=true' ?>" style="float:right"> <b>Logout</b> </a> 
-    	<a href="<? echo $SERVER['HTTP_HOST'].'/home.html' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
+		<a href="<? echo $SERVER['HTTP_HOST'].'/login?logout=true' ?>" style="float:right"> <b>Logout</b> </a> 
+    	<a href="<? echo $SERVER['HTTP_HOST'].'/home' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
 
     </div>
 

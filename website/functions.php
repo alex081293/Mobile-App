@@ -179,7 +179,7 @@ function generateUpcomingTable($completedSessions) {
 function authenticate($pid, $dId) {
 	$query = "SELECT doctorId from patients where id='$pid'";
 	$returned = dbFetch($query);
-	if ($dId != $returned[0]['doctorId']) newLocation('/404.html');
+	if ($dId != $returned[0]['doctorId']) newLocation('/404');
 }
 
 function isNotWeekend($date) {

@@ -48,11 +48,11 @@
     	authenticate($pId, $drId);
 
     	if ($_POST['injury'] == "Create new session") {
-    		newLocation('/add_therapy.html?p='.$pId);
+    		newLocation('/add_therapy?p='.$pId);
     	} else if ($_POST['injury']) {
-    		newLocation('/injury.html?p='.$pId.'&i='.$_POST['injury']);
+    		newLocation('/injury?p='.$pId.'&i='.$_POST['injury']);
     	} else if ($_POST['therapy']) {
-    		newLocation('/add_therapy.html?p='.$pId.'&t='.$_POST['tId']);
+    		newLocation('/add_therapy?p='.$pId.'&t='.$_POST['tId']);
     	}
 
     	if ($_GET['i']) {
@@ -79,9 +79,9 @@
     	<form method="post">
     		<input type="submit" name="injury" class="funcButtons a" value="Create new session" style="background-color: #B64952;">
     	</form>
-		<a href="<? echo $SERVER['HTTP_HOST'].'/login.html?logout=true' ?>" style="float:right"> <b>Logout</b> </a> 
-		<a href="<? echo $SERVER['HTTP_HOST'].'/home.html' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
-    	<a href="<? echo $SERVER['HTTP_HOST'].'/patients.html?id=' . $pId; ?>" style="float:right; padding-right:20px;"> <b>Go back to Patient</b> </a> 
+		<a href="<? echo $SERVER['HTTP_HOST'].'/login?logout=true' ?>" style="float:right"> <b>Logout</b> </a> 
+		<a href="<? echo $SERVER['HTTP_HOST'].'/home' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
+    	<a href="<? echo $SERVER['HTTP_HOST'].'/patients?id=' . $pId; ?>" style="float:right; padding-right:20px;"> <b>Go back to Patient</b> </a> 
 </div>
 
 <!-- <div id="error"><img src="https://dl.dropboxusercontent.com/u/23299152/Delete-icon.png" /> Your caps-lock is on.</div> -->

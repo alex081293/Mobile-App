@@ -60,7 +60,7 @@
 					$query = "UPDATE patients SET firstName='$firstName', lastName='$lastName', injuryType='$injuryType', injuryDetails='$injuryDetails', age='$age', phoneNumber='$phoneNumber', avatar='$avatar', email='$email' WHERE id='$pId'";
 
 					$result = dbQuery($query);
-					newLocation('/patients.html?id='.$pId);
+					newLocation('/patients?id='.$pId);
 				}
 
 
@@ -100,7 +100,7 @@
 	    		<div class="success" style="text-align:center"> 
 	    			<font color="green"> 
 	    				<h3><? echo $sFlag; ?></h3>
-	    				You can view your patient <a href="<? echo $SERVER['HTTP_HOST'] . '/patients.html?id=' . $newpId; ?>"> here.</a>
+	    				You can view your patient <a href="<? echo $SERVER['HTTP_HOST'] . '/patients?id=' . $newpId; ?>"> here.</a>
 	    			</font>
 	    		</div>
 	    		<br>
@@ -121,9 +121,9 @@
 	    	</form>
 	    	<? } ?>
 	    	
-	    	<a href="<? echo $SERVER['HTTP_HOST'].'/login.html?logout=true' ?>" style="float:right"> <b>Logout        </b> </a>        
-	    	<a href="<? echo $SERVER['HTTP_HOST'].'/home.html' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
-	    	<? if ($patient) { ?> <a href="<? echo $SERVER['HTTP_HOST'].'/patients.html?id=' . $pId; ?>" style="float:right; padding-right:20px;"> <b>Go back to Patient</b> </a> <? } ?>
+	    	<a href="<? echo $SERVER['HTTP_HOST'].'/login?logout=true' ?>" style="float:right"> <b>Logout        </b> </a>        
+	    	<a href="<? echo $SERVER['HTTP_HOST'].'/home' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
+	    	<? if ($patient) { ?> <a href="<? echo $SERVER['HTTP_HOST'].'/patients?id=' . $pId; ?>" style="float:right; padding-right:20px;"> <b>Go back to Patient</b> </a> <? } ?>
 
 	    </div>
 

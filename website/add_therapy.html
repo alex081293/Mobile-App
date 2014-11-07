@@ -103,7 +103,7 @@
 	    			<font color="green"> 
 	    				<h3> Success! </h3>
 	    				You have succesfully added a therapy session for your patient. 
-	    				<a href="<? echo $SERVER['HTTP_HOST'] . '/patients.html?id=' . $pId; ?>"> View patient here.</a>
+	    				<a href="<? echo $SERVER['HTTP_HOST'] . '/patients?id=' . $pId; ?>"> View patient here.</a>
 	    			</font>
 	    		</div>
 	    		<br>
@@ -137,9 +137,9 @@
 			<input type="submit" name="add" class="login login-submit" value="submit" style="width:20; margin-left: auto; margin-right: auto;">
 	    	</form>
 	    	<? } ?>
-	    	<a href="<? echo $SERVER['HTTP_HOST'].'/login.html?logout=true' ?>" style="float:right"> <b>Logout        </b> </a>        
-	    	<a href="<? echo $SERVER['HTTP_HOST'].'/home.html' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
-	    	<a href="<? echo $SERVER['HTTP_HOST'].'/patients.html?id=' . $pId; ?>" style="float:right; padding-right:20px;"> <b>Go back to Patient</b> </a> 
+	    	<a href="<? echo $SERVER['HTTP_HOST'].'/login?logout=true' ?>" style="float:right"> <b>Logout        </b> </a>        
+	    	<a href="<? echo $SERVER['HTTP_HOST'].'/home' ?>" style="float:right; padding-right:20px;"> <b>Go back home</b> </a> 
+	    	<a href="<? echo $SERVER['HTTP_HOST'].'/patients?id=' . $pId; ?>" style="float:right; padding-right:20px;"> <b>Go back to Patient</b> </a> 
 	    </div>
 
 </div>
