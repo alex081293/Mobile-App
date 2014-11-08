@@ -134,7 +134,7 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 			String query = "select * from patients where loginToken="
 					+ thePrefs.getInt("prescription", 0);
 			new dbMakeQuery().execute(query, "f");
-
+			
 			setContentView(R.layout.activity_patient_list);
 
 		}

@@ -37,6 +37,42 @@ public class HelperFunctions {
 		}
 		return result;
 	}
+	
+	public String[] breakJSONIntoArray(String jsonEncodedString) {
+		String[] results = new String[100];
+		for (int i=0; i<100; i++) results[i] = "";
+		String result = "";
+		
+		int flag = 0;
+		
+		int index = 0;
+		
+		for(int i=0; i< jsonEncodedString.length(); i++) {
+			char c = jsonEncodedString.charAt(i);
+			if (flag == 1) {
+				flag = 0;
+				index++;
+			} else if (c != '}') {
+				results[index] += c;
+			} else if (c == '}' ) {
+				results[index] += c;
+				flag = 1;
+			}
+		}
+		
+		int newSize = 0;
+		for(int i=0; i<100; i++) {
+			if (results[i] == "") newSize = i;
+		}
+		
+		String[] toBeReturned = new String[newSize];
+		
+		for(int i=0; i<newSize; i++) {
+			toBeReturned[i] = results[i];
+		}		
+		
+		return toBeReturned;
+	}
 
 	// Sends a request to our web server with the query in the param and the type of query
 	public String httpRequest(String query, String type) throws Exception {
@@ -87,7 +123,7 @@ public String getJSON(String address){
 		HttpResponse response = client.execute(httpGet);
 		StatusLine statusLine = response.getStatusLine();
 		int statusCode = statusLine.getStatusCode();
-		if(statusCode == 200){
+		if(statusCode == 200) {
 			HttpEntity entity = response.getEntity();
 			InputStream content = entity.getContent();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(content));

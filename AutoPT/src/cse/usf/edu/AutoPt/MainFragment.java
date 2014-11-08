@@ -119,22 +119,7 @@ public class MainFragment extends ListFragment {
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
         mCallbacks.onItemSelected(Menu.ITEMS.get(position).id);
-    }
-    
-//    public void submitButtonClick(View view)
-//    {
-//    	Button submitBtn = (Button) getView().findViewById(R.id.submitBtn);
-//    	submitBtn.setOnClickListener(new OnClickListener()
-//    		   {         @Override
-//    		             public void onClick(View v)
-//    		             {
-//    		            	 Toast.makeText(MainFragment.this.getActivity(), "Button Clicked", Toast.LENGTH_SHORT).show();
-//    		             } 
-//    		   }); 
-//    	
-//    	
-//    }
-    
+    }   
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

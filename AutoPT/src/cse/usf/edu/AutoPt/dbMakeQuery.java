@@ -19,6 +19,8 @@ class dbMakeQuery extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
     	String result = "";
     	
+    	onPreExecute();
+    	
     	try {
     		result = help.httpRequest(params[0], params[1]);
 		} catch (Exception e) {
@@ -29,18 +31,14 @@ class dbMakeQuery extends AsyncTask<String, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String result) {
-    	
+    protected void onPostExecute(String result) {    	
     	patientDetailActivity.results = result;
-    	patient user = new patient("","",0,0,0);
-    	
     	patientDetailActivity.loadComplete=true;
-    	
     }
     
     @Override
     protected void onPreExecute() {
-    	
+    	patientDetailActivity.loadComplete=false;
     }
 
     @Override
