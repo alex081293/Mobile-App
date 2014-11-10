@@ -1,5 +1,8 @@
 package cse.usf.edu.AutoPt;
 
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +29,7 @@ public class MessageAdapter extends ArrayAdapter<message>  {
 
 
 	public MessageAdapter(Context context, int layoutResourceId, ArrayList<message> messages) {
-        super(context, layoutResourceId);
+        super(context, layoutResourceId, messages);
         this.context = context;
         this.layoutResourceId = layoutResourceId;
         this.messages = messages;
@@ -42,35 +45,28 @@ public class MessageAdapter extends ArrayAdapter<message>  {
 	
 	@Override
 	public View getView(int i, View convertView, ViewGroup viewGroup) {
-		View row = convertView;
-		ViewHolder  holder = null;
+
 		int direction = messages.get(i).userType;
 		//show message on left or right, depending on if
 		//it's incoming or outgoing
-		System.out.println("try this");
-		if (row == null) {
+		if (convertView == null) {
 			LayoutInflater inflater = ((Activity)context).getLayoutInflater(); 
 			
 			int res = 0;
 			if (direction == 0) {
-				res = R.layout.message_right;
-			} else if (direction == 1) {
 				res = R.layout.message_left;
-			}
-			
-			row = inflater.inflate(res, viewGroup, false);
-			holder = new ViewHolder();
-			
-			holder.txtMessage = (TextView) row.findViewById(R.id.txtMessage);
-			holder.txtDate = (TextView) row.findViewById(R.id.txtDate);
-			row.setTag(holder);
+			} else if (direction == 1) {
+				res = R.layout.message_right;
+			} 
+			convertView = inflater.inflate(res, viewGroup, false);
 		}
+		 TextView txtMessage = (TextView) convertView.findViewById(R.id.txtMessage);
+		 TextView txtDate = (TextView) convertView.findViewById(R.id.txtDate);
 
-		 System.out.println(messages.get(i).message);
-		 holder.txtMessage.setText(messages.get(i).message);
-		 holder.txtDate.setText(messages.get(i).time);
-
-		 return row;
+		 txtMessage.setText(messages.get(i).message);
+		 txtDate.setText(messages.get(i).time);
+		 
+		 return convertView;
 	}
 	
     static class ViewHolder {

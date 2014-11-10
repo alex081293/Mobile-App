@@ -75,22 +75,21 @@ public class MessagesFragment extends Fragment {
 				try {
 					String message = messageContent.getText().toString();
 					
-					Log.i("issue", message);
-					
-					String query = "INSERT INTO messages " +
-							"(userId, userType, patient, message, private, time) " +
-							"VALUES('" + pId + "', '1', '0', '" + message + "', '0', NOW())";
-
-					new dbMakeQuery().execute(query, "i");
-					while (patientDetailActivity.loadComplete == false) {}
-		        	Fragment fragment = new MessagesFragment();
-		            Bundle arguments = new Bundle();
-		            		            
-		            fragment.setArguments(arguments);
-		            getFragmentManager().beginTransaction()
-		                    .add(R.id.patient_detail_container, fragment)
-		                    .commit();
-					
+					if (message != "") {
+						String query = "INSERT INTO messages " +
+								"(userId, userType, patient, message, private, time) " +
+								"VALUES('" + pId + "', '1', '0', '" + message + "', '0', NOW())";
+	
+						new dbMakeQuery().execute(query, "i");
+						while (patientDetailActivity.loadComplete == false) {}
+			        	Fragment fragment = new MessagesFragment();
+			            Bundle arguments = new Bundle();
+			            		            System.out.println("this");
+			            fragment.setArguments(arguments);
+			            getFragmentManager().beginTransaction()
+			                    .add(R.id.patient_detail_container, fragment)
+			                    .commit();
+					}
 				} catch (Exception e) {
 					
 				}
@@ -102,7 +101,7 @@ public class MessagesFragment extends Fragment {
     private String[] getMessages() {
     	String query = "SELECT * FROM messages WHERE (userId='" + pId + "' and userType='1')" +
     			" OR (userId='" + drId + "' and userType='0' and patient='" + pId + "'" +
-    			") ORDER BY time DESC";
+    			") ORDER BY time ASC";
     	new dbMakeQuery().execute(query, "f");
     	while (patientDetailActivity.loadComplete == false) {};
     	String[] jsonMessageArray = help.breakJSONIntoArray(patientDetailActivity.results);
