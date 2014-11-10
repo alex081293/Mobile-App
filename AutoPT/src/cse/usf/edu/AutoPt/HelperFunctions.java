@@ -62,11 +62,11 @@ public class HelperFunctions {
 		
 		int newSize = 0;
 		for(int i=0; i<100; i++) {
-			if (results[i] == "") newSize = i;
+			if (results[i] == "" && newSize == 0) newSize = i;
 		}
 		
 		String[] toBeReturned = new String[newSize];
-		
+		System.out.println("New Size: " + newSize);
 		for(int i=0; i<newSize; i++) {
 			toBeReturned[i] = results[i];
 		}		

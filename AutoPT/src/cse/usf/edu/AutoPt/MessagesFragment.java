@@ -1,21 +1,22 @@
 package cse.usf.edu.AutoPt;
 
-import org.json.JSONArray;
+import java.util.ArrayList;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.app.Fragment;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.ListView;
 
-
-import cse.usf.edu.AutoPt.dummy.Menu;
 
 public class MessagesFragment extends Fragment {
 	HelperFunctions help = new HelperFunctions();
@@ -31,26 +32,40 @@ public class MessagesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {        
     	View messagesView = inflater.inflate(R.layout.messages, container, false);
-       
-        Boolean exception = false;
+        ListView listView = (ListView)messagesView.findViewById(R.id.listMessages);
+   
+    	ArrayList<message> messages = new ArrayList<message>();
+		String[] messageArray = getMessages();		
+		
+		for(int i=0; i<messageArray.length; i++) {
+			String theMess = null, time = null;
+			int userType = 0;
 
-        try {
-			String[] messages = getMessages();
+			JSONObject jsonObject = null;
+			try {
+				jsonObject = new JSONObject(messageArray[i]);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+			try {theMess = jsonObject.getString("message");} catch (JSONException e) {System.out.println("3");}
+			try {time = jsonObject.getString("time");} catch (JSONException e) {System.out.println("4");}
+			try {userType = jsonObject.getInt("userType");} catch (JSONException e) {}
 			
-			for(int i=0; i < messages.length; i++) {
-				JSONObject jsonObject = new JSONObject(messages[i]);
-				String theMess = jsonObject.getString("message");
-				String time = jsonObject.getString("time");
-				int userType = jsonObject.getInt("userType");	
-			}		
-		} catch (JSONException e1) {
-			e1.printStackTrace();
+			message newMessage = new message(theMess, time, userType);
+			messages.add(newMessage); 	
 		}
-        
+		
+		for(int i=0; i< messages.size() ; i++) {
+			System.out.println(messages.get(i).time);
+			System.out.println(messages.get(i).userType);
+		}
+
+        MessageAdapter adapter = new MessageAdapter(getActivity(), R.id.listMessages, messages);
+        listView.setAdapter(adapter);  
         
         final EditText messageContent = (EditText)messagesView.findViewById(R.id.messageBodyField);
 		Button sendMessageBtn = (Button)messagesView.findViewById(R.id.sendButton);
@@ -60,10 +75,11 @@ public class MessagesFragment extends Fragment {
 				try {
 					String message = messageContent.getText().toString();
 					
-					System.out.println(message);
+					Log.i("issue", message);
+					
 					String query = "INSERT INTO messages " +
 							"(userId, userType, patient, message, private, time) " +
-							"VALUES('" + drId + "', '0', '" + pId + "', '" + message + "', '0', NOW())";
+							"VALUES('" + pId + "', '1', '0', '" + message + "', '0', NOW())";
 
 					new dbMakeQuery().execute(query, "i");
 					while (patientDetailActivity.loadComplete == false) {}
@@ -83,18 +99,13 @@ public class MessagesFragment extends Fragment {
  
         return messagesView;
     }
-    
-    private String[] getMessages() throws JSONException {
+    private String[] getMessages() {
     	String query = "SELECT * FROM messages WHERE (userId='" + pId + "' and userType='1')" +
     			" OR (userId='" + drId + "' and userType='0' and patient='" + pId + "'" +
     			") ORDER BY time DESC";
-    	System.out.println("In getMessages: " + query);
     	new dbMakeQuery().execute(query, "f");
-    	
     	while (patientDetailActivity.loadComplete == false) {};
-    	
     	String[] jsonMessageArray = help.breakJSONIntoArray(patientDetailActivity.results);
-    	
     	return jsonMessageArray;
     }
 }
