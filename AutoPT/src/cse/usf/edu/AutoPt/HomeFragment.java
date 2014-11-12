@@ -17,9 +17,7 @@ import cse.usf.edu.AutoPt.dummy.Menu;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
-	/**
-	 * @param args
-	 */
+	public static patient user = new patient("","",0,0,0);
 	public HomeFragment() {
     }
 
@@ -33,7 +31,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-    	
+    	user = patientDetailActivity.user;
         View rootView = inflater.inflate(R.layout.home, container, false);
         
         TextView tv1 = (TextView)rootView.findViewById(R.id.textView1);
@@ -59,18 +57,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void updateResults(){
     	
     }
-    public void submitButtonClick(View view)
-    {
-    	
-    	TextView tv1 = (TextView)getView().findViewById(R.id.textView1);
-        tv1.setText("Loading...");
-    }
+    
     @Override
     public void onClick(View v) {
     	switch(v.getId()){
 	        case R.id.homeBtn:
 	        	TextView tv1 = (TextView)getView().findViewById(R.id.textView1);
-	            tv1.setText("Loading...");
+	            tv1.setText(user.firstName);
 	        break;
 	    } 
         

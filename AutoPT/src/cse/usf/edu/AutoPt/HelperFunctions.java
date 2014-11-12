@@ -25,6 +25,8 @@ public class HelperFunctions {
 	public String getJSONFromReturn(String line) {
 		String result = "";
 		int flag = 0;
+		if(line == "string(2) \"[]\"")
+			return "{}";
 		for(int i=0; i< line.length(); i++) {
 			char c = line.charAt(i);
 			if (c == ']') {

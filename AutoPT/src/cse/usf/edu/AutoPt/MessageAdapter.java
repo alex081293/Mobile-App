@@ -20,8 +20,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class MessageAdapter extends ArrayAdapter<message>  {
-	static int pId = 63;
-	static int drId = 1;
+	static int pId = patientDetailActivity.user.pId;
+	static int drId = patientDetailActivity.user.drId;
 	
 	private final Context context;
 	private final int layoutResourceId;
@@ -68,9 +68,4 @@ public class MessageAdapter extends ArrayAdapter<message>  {
 		 
 		 return convertView;
 	}
-	
-    static class ViewHolder {
-        TextView txtMessage;
-        TextView txtDate;
-    }
 }

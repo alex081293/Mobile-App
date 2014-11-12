@@ -20,11 +20,11 @@ import android.widget.ListView;
 
 public class MessagesFragment extends Fragment {
 	HelperFunctions help = new HelperFunctions();
-	static int pId = 63;
-	static int drId = 1;
-	/**
-	 * @param args
-	 */
+//	static int pId = 63;
+//	static int drId = 1;
+	
+//	static final int pId = patientDetailActivity.user.pId;
+//	static final int drId = patientDetailActivity.user.drId;
 	public MessagesFragment() {
     }
 
@@ -41,32 +41,29 @@ public class MessagesFragment extends Fragment {
     	ArrayList<message> messages = new ArrayList<message>();
 		String[] messageArray = getMessages();		
 		
-		for(int i=0; i<messageArray.length; i++) {
-			String theMess = null, time = null;
-			int userType = 0;
-
-			JSONObject jsonObject = null;
-			try {
-				jsonObject = new JSONObject(messageArray[i]);
-			} catch (JSONException e) {
-				e.printStackTrace();
+		if (getMessageCount() != 0) {
+			for(int i=0; i<messageArray.length; i++) {
+				String theMess = null, time = null;
+				int userType = 0;
+	
+				JSONObject jsonObject = null;
+				try {
+					jsonObject = new JSONObject(messageArray[i]);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				try {theMess = jsonObject.getString("message");} catch (JSONException e) {System.out.println("3");}
+				try {time = jsonObject.getString("time");} catch (JSONException e) {System.out.println("4");}
+				try {userType = jsonObject.getInt("userType");} catch (JSONException e) {}
+				
+				message newMessage = new message(theMess, time, userType);
+				messages.add(newMessage); 	
 			}
-			try {theMess = jsonObject.getString("message");} catch (JSONException e) {System.out.println("3");}
-			try {time = jsonObject.getString("time");} catch (JSONException e) {System.out.println("4");}
-			try {userType = jsonObject.getInt("userType");} catch (JSONException e) {}
-			
-			message newMessage = new message(theMess, time, userType);
-			messages.add(newMessage); 	
+	
+	        MessageAdapter adapter = new MessageAdapter(getActivity(), R.id.listMessages, messages);
+	        listView.setAdapter(adapter);  
 		}
 		
-		for(int i=0; i< messages.size() ; i++) {
-			System.out.println(messages.get(i).time);
-			System.out.println(messages.get(i).userType);
-		}
-
-        MessageAdapter adapter = new MessageAdapter(getActivity(), R.id.listMessages, messages);
-        listView.setAdapter(adapter);  
-        
         final EditText messageContent = (EditText)messagesView.findViewById(R.id.messageBodyField);
 		Button sendMessageBtn = (Button)messagesView.findViewById(R.id.sendButton);
 
@@ -78,7 +75,7 @@ public class MessagesFragment extends Fragment {
 					if (message != "") {
 						String query = "INSERT INTO messages " +
 								"(userId, userType, patient, message, private, time) " +
-								"VALUES('" + pId + "', '1', '0', '" + message + "', '0', NOW())";
+								"VALUES('" + patientDetailActivity.user.pId + "', '1', '0', '" + message + "', '0', NOW())";
 	
 						new dbMakeQuery().execute(query, "i");
 						while (patientDetailActivity.loadComplete == false) {}
@@ -99,12 +96,31 @@ public class MessagesFragment extends Fragment {
         return messagesView;
     }
     private String[] getMessages() {
-    	String query = "SELECT * FROM messages WHERE (userId='" + pId + "' and userType='1')" +
-    			" OR (userId='" + drId + "' and userType='0' and patient='" + pId + "'" +
+    	String query = "SELECT * FROM messages WHERE (userId='" + patientDetailActivity.user.pId + "' and userType='1')" +
+    			" OR (userId='" + patientDetailActivity.user.drId + "' and userType='0' and patient='" + patientDetailActivity.user.pId + "'" +
     			") ORDER BY time ASC";
     	new dbMakeQuery().execute(query, "f");
     	while (patientDetailActivity.loadComplete == false) {};
     	String[] jsonMessageArray = help.breakJSONIntoArray(patientDetailActivity.results);
     	return jsonMessageArray;
+    }
+    
+    
+    private int getMessageCount() {
+    	String query = "SELECT COUNT(*) as count FROM messages WHERE (userId='" + patientDetailActivity.user.pId + "' and userType='1')" +
+    			" OR (userId='" + patientDetailActivity.user.drId + "' and userType='0' and patient='" + patientDetailActivity.user.pId + "'" +
+    			") ORDER BY time ASC";
+    	new dbMakeQuery().execute(query, "f");
+    	while (patientDetailActivity.loadComplete == false) {};
+    	int count = 0;
+    	JSONObject countObj;
+		try {
+			countObj = new JSONObject(patientDetailActivity.results);
+			count = countObj.getInt("count");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return count;
     }
 }

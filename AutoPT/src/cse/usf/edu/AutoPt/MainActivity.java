@@ -69,7 +69,7 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 				EditText eText = (EditText) findViewById(R.id.key);
 				String data = eText.getText().toString();
 
-				prefsEd.putString("fistName",
+				prefsEd.putString("firstName",
 						patientDetailActivity.user.firstName);
 				prefsEd.putString("lastName",
 						patientDetailActivity.user.lastName);
@@ -127,14 +127,14 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 		user.perscription = thePrefs.getInt("prescription", 0);
 		user.drId = thePrefs.getInt("drId", 0);
 		user.pId = thePrefs.getInt("pId", 0);
-
+		user.firstName = thePrefs.getString("firstName", "");
+		user.lastName = thePrefs.getString("lastName", "");
 		if (user.perscription == 0) {
 			setContentView(R.layout.firsttime);
 		} else {
-			String query = "select * from patients where loginToken="
-					+ thePrefs.getInt("prescription", 0);
-			new dbMakeQuery().execute(query, "f");
+			patientDetailActivity.user=user;
 			
+			updateUser(user);
 			setContentView(R.layout.activity_patient_list);
 
 		}
@@ -198,6 +198,9 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 	
 	public void updateUser(patient user){
 		try{
+			String query = "select * from patients where loginToken="
+					+ user.perscription;
+			new dbMakeQuery().execute(query, "f");
 			JSONObject jsonObject = new JSONObject(patientDetailActivity.results);
 			user.firstName = jsonObject.getString("firstName");
 			user.lastName = jsonObject.getString("lastName");

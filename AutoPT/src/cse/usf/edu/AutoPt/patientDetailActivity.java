@@ -64,7 +64,7 @@ public class patientDetailActivity extends Activity {
 	            	fragment = new HomeFragment();
 	            	break;
 	            case 2:
-	            	fragment = new SessionsFragment();
+	            	fragment = new SessionsListFragment();
 	            	break;
 	            case 3:
 	            	fragment = new AlertsFragment();
