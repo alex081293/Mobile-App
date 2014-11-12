@@ -83,6 +83,7 @@ function deletePatient($patientId) {
 	dbQuery($query);
 	$query = "DELETE FROM messages WHERE patient='$patientId'";
 	dbQuery($query);
+	$query = "DELETE FROM sessions where patient='$patientId'";
 }
 
 function generateTable($patient) {
@@ -185,6 +186,7 @@ function authenticate($pid, $dId) {
 function isNotWeekend($date) {
     return (date('N', strtotime($date)) < 6);
 }
+
 
 
 ?>

@@ -10,8 +10,6 @@ import android.widget.ListView;
 import android.widget.Button;
 import android.widget.Toast;
 
-import cse.usf.edu.AutoPt.dummy.Menu;
-
 /**
  * A list fragment representing a list of patients. This fragment
  * also supports tablet devices by allowing list items to be given an

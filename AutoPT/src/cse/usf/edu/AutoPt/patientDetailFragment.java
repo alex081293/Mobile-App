@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import cse.usf.edu.AutoPt.dummy.Menu;
-
 /**
  * A fragment representing a single patient detail screen.
  * This fragment is either contained in a {@link MainActivity}

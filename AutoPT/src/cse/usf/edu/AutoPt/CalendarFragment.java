@@ -7,9 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
-import cse.usf.edu.AutoPt.dummy.Menu;
-
 public class CalendarFragment extends Fragment {
 
 	/**

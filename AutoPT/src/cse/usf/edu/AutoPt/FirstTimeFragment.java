@@ -18,7 +18,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.text.Editable;
 import android.view.KeyEvent;
 
-import cse.usf.edu.AutoPt.dummy.Menu;
 import cse.usf.edu.AutoPt.MainActivity;
 public class FirstTimeFragment extends Fragment {
 	

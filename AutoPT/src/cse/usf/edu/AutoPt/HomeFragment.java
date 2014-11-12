@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.content.Intent;
 import cse.usf.edu.AutoPt.HelperFunctions;
 import cse.usf.edu.AutoPt.dbMakeQuery;
-import cse.usf.edu.AutoPt.dummy.Menu;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 

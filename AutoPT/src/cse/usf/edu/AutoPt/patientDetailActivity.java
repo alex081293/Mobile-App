@@ -1,10 +1,12 @@
 package cse.usf.edu.AutoPt;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Message;
 import android.view.MenuItem;
 import android.widget.TextView;
 import android.annotation.SuppressLint;
@@ -12,7 +14,6 @@ import android.app.Activity;
 import android.app.Fragment;
 
 import cse.usf.edu.AutoPt.patient;
-import cse.usf.edu.AutoPt.dummy.Menu;
 import cse.usf.edu.AutoPt.MainActivity;
 
 /**
@@ -25,16 +26,14 @@ import cse.usf.edu.AutoPt.MainActivity;
  * more than a {@link patientDetailFragment}.
  */
 public class patientDetailActivity extends Activity {
-
 	public static String results;
 	public static patient user = new patient("","",0,0,0);
-
+	
 	public static boolean loadComplete = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_detail);
-
 
         // Show the Up button in the action bar.
         getActionBar().setDisplayHomeAsUpEnabled(true);

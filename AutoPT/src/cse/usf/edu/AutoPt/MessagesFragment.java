@@ -37,7 +37,9 @@ public class MessagesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {        
     	View messagesView = inflater.inflate(R.layout.messages, container, false);
         ListView listView = (ListView)messagesView.findViewById(R.id.listMessages);
-   
+        
+		setToSeenMessages();
+        
     	ArrayList<message> messages = new ArrayList<message>();
 		String[] messageArray = getMessages();		
 		
@@ -92,7 +94,7 @@ public class MessagesFragment extends Fragment {
 				}
 			}
 		});
- 
+		
         return messagesView;
     }
     private String[] getMessages() {
@@ -122,5 +124,12 @@ public class MessagesFragment extends Fragment {
 			e.printStackTrace();
 		}
     	return count;
+    }
+    
+    private void setToSeenMessages() {
+    	String query = "UPDATE messages SET viewed='1' WHERE userId='" + patientDetailActivity.user.drId + "' and userType='0' and patient='" 
+    					+ patientDetailActivity.user.pId +"'";
+    	new dbMakeQuery().execute(query, "u");
+    	while (patientDetailActivity.loadComplete == false) {};
     }
 }

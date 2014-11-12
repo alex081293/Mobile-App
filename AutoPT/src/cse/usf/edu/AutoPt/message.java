@@ -1,5 +1,8 @@
 package cse.usf.edu.AutoPt;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class message {
 	public String message;
 	public String time;
@@ -10,4 +13,5 @@ public class message {
         this.time = tim;
         this.userType = t;
     }
+	
 }
