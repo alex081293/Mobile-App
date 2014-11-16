@@ -47,7 +47,10 @@ public class SessionsListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState)
     {
     	String query = "select * from sessions where patientId = " +patientDetailActivity.user.pId+ " and time <= now()";
-				
+		String notesText = "";	
+		final Intent exerciseIntent = new Intent(getActivity(), ExerciseActivity.class);
+    	
+    	
     	HelperFunctions help = new HelperFunctions();
 		new dbMakeQuery().execute(query, "f");
 		
@@ -72,6 +75,13 @@ public class SessionsListFragment extends Fragment {
 			}
 	    	try {
 				myButton.setId(object.getInt("id"));
+				exerciseIntent.putExtra("id", object.getString("id"));
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	try {
+	    		exerciseIntent.putExtra("notes", object.getString("notes"));
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -86,7 +96,7 @@ public class SessionsListFragment extends Fragment {
 	    	Button btn1 = ((Button) getView().findViewById(id_));
     	    btn1.setOnClickListener(new View.OnClickListener() {
     	        public void onClick(View view) {
-    	        	Intent exerciseIntent = new Intent(getActivity(), ExerciseActivity.class);
+    	        	
     	        	startActivity(exerciseIntent);
 //    	        	This is where you should connect the bioHarness. The Buttons have the asscociated session id as their Id
 //    	        	Currently I am using lessthan today to populate my the list but that will be change to a specific day
