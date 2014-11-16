@@ -129,21 +129,20 @@ function generateCompletedTable($completedSessions) {
 	    <th class="tg-031e">Time Completed</th>
 	    <th class="tg-031e">Heart Rate</th>
 	    <th class="tg-031e">Breathing Rate</th>
-	    <th class="tg-031e">Activity Level</th>
+	    <th class="tg-031e">Peak Acceleration</th>
 	    <th class="tg-031e">Posture</th>
-	    <th class="tg-031e">Temperature</th>
 	  </tr> ';
 	  foreach ($completedSessions as $sesh) {
+	  	$time = ($sesh['heartRate'] == 0 && $sesh['breathingRate'] == 0) ? "Missed Workout" : date('F j, Y, g:i a', strtotime($sesh['time']));
 	 	echo '
 	 	<tr>
 		    <td class="tg-031e">' . $sesh['sessionName'] . '</td>
 		    <td class="tg-031e">' . $sesh['notes'] . '</td>
-		    <td class="tg-031e">' . date('F j, Y, g:i a', strtotime($sesh['time'])). '</td>
+		    <td class="tg-031e">' . $time . '</td>
 		    <td class="tg-031e">' . $sesh['heartRate'] . '</td>
 		    <td class="tg-031e">' . $sesh['breathingRate'] . '</td>
-		    <td class="tg-031e">' . $sesh['activityLevel'] . '</td>
+		    <td class="tg-031e">' . $sesh['peakAccel'] . '</td>
 		    <td class="tg-031e">' . $sesh['posture'] . '</td>
-		    <td class="tg-031e">' . $sesh['temp'] . '</td>
 	    </tr>';
 	  }
 	echo '</table>';
@@ -159,8 +158,8 @@ function generateUpcomingTable($completedSessions) {
 	  <tr>
 	    <th class="tg-031e">Session Name</th>
 	    <th class="tg-031e">Notes</th>
-	    <th class="tg-031e">Date to Completed</th>
-	    <th class="tg-031e">Video</th>
+	    <th class="tg-031e">Date to complete exercise</th>
+	    <th class="tg-031e">Image</th>
 	  </tr> ';
 	  foreach ($completedSessions as $sesh) {
 	 	echo '

@@ -2,8 +2,10 @@ package cse.usf.edu.AutoPt;
 
 import org.json.JSONObject;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -16,13 +18,12 @@ import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.app.ActionBar.LayoutParams;
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.graphics.Color;
 import android.widget.PopupWindow;
 
 import cse.usf.edu.AutoPt.patient;
@@ -47,6 +48,42 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 	 * Whether or not the activity is in two-pane mode, i.e. running on a tablet
 	 * device.
 	 */
+	
+	final int MSGCODE = 1337;
+	final int SESHCODE = 2;
+	
+    private BroadcastReceiver receiver = new BroadcastReceiver(){
+    	@Override
+    	public void onReceive(Context c, Intent i) {
+    		final NotificationManager mgr = (NotificationManager)c.getSystemService(Context.NOTIFICATION_SERVICE);
+    		
+            PendingIntent ij = PendingIntent.getActivity(c, 0, new Intent(c, MainActivity.class),0);
+    		
+    		Notification noteM = new Notification(R.drawable.smalllogo, "New Messages from AutoPT", System.currentTimeMillis());
+    		noteM.setLatestEventInfo(c, "New Message", "Your Physical Therapist has sent you a message.", ij);            
+
+    		Notification noteS = new Notification(R.drawable.smalllogo, "New Session", System.currentTimeMillis());
+    		noteS.setLatestEventInfo(c, "Therapy Session", "You have a therapy session to complete today.", ij); 
+    		        
+    		int count = HelperFunctions.getUnseenMessages();
+    		int workoutCount = HelperFunctions.getTodaysWorkoutCount();
+   		
+    		// if (patientDetailActivity.user.soundSettings == 1) 
+			 noteM.defaults |= Notification.DEFAULT_SOUND;
+		 // if (patientDetailActivity.user.vibrateSettings == 1)
+			 noteM.defaults |= Notification.DEFAULT_VIBRATE;   		
+    		
+    		if (count > 0) {	    		 
+	    	     mgr.notify(MSGCODE, noteM);   
+	    	     HelperFunctions.setToSeenMessages();
+    		} else if (workoutCount > 0) {//&& patientDetailActivity.user.alertTime = strDate {
+    			mgr.notify(SESHCODE, noteS);
+    		}
+    	}
+    };
+    
+    private IntentFilter filter = new IntentFilter(Intent.ACTION_TIME_TICK);
+	
 	public void submitButtonClick(View view) {
 		Button submitBtn = (Button) this.findViewById(R.id.submitBtn);
 		
@@ -112,7 +149,7 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 				}
 			});
 		}
-
+	
 	}
 
 	private boolean mTwoPane;
@@ -133,10 +170,8 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 			setContentView(R.layout.firsttime);
 		} else {
 			patientDetailActivity.user=user;
-			
 			updateUser(user);
 			setContentView(R.layout.activity_patient_list);
-
 		}
 		if (findViewById(R.id.patient_detail_container) != null) {
 			mTwoPane = true;
@@ -146,32 +181,15 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 			((MainFragment) getFragmentManager().findFragmentById(
 					R.id.patient_list)).setActivateOnItemClick(true);
 		}
-
-		
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.smalllogo)
-                .setContentTitle("New Message")
-                .setContentText("Hello World!");
-        
-        // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, patientDetailActivity.class);
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(patientDetailActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                    0,
-                    PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(1, mBuilder.build());	 
+		final NotificationManager mgr = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+		mgr.cancel(MSGCODE);
+		mgr.cancel(SESHCODE);
+}
+	
+	@Override
+	protected void onResume() {
+		this.registerReceiver(receiver, filter);
+		super.onResume();
 	}
 
 	@Override

@@ -14,6 +14,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
@@ -116,6 +117,22 @@ public class HelperFunctions {
 		return "";
 	}
 
+    public static int getUnseenMessages() {
+    	String query = "SELECT COUNT(*) as count FROM messages WHERE userId='" + patientDetailActivity.user.drId 
+    			+ "' and userType='0' and patient='" + patientDetailActivity.user.pId + "'" + " and viewed='0'";
+    	new dbMakeQuery().execute(query, "f");
+    	patientDetailActivity.loadComplete = false;
+    	while (patientDetailActivity.loadComplete == false) {};
+    	JSONObject countObj;
+		try {
+			countObj = new JSONObject(patientDetailActivity.results);
+			return countObj.getInt("count");
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+    }
 
 public String getJSON(String address){
 	StringBuilder builder = new StringBuilder();
@@ -142,5 +159,29 @@ public String getJSON(String address){
 		e.printStackTrace();
 	}
 	return builder.toString();
+}
+
+public static void setToSeenMessages() {
+	String query = "UPDATE messages SET viewed='1' WHERE userId='" + patientDetailActivity.user.drId + "' and userType='0' and patient='" 
+					+ patientDetailActivity.user.pId +"'";
+	new dbMakeQuery().execute(query, "u");
+	while (patientDetailActivity.loadComplete == false) {};
+}
+
+public static int getTodaysWorkouts() {
+	String query = "SELECT COUNT(*) as count FROM sessions WHERE patientId='" + patientDetailActivity.user.pId + "'" + " and completed='0' and " +
+			"DATE(time) = CURDATE()";
+	new dbMakeQuery().execute(query, "f");
+	patientDetailActivity.loadComplete = false;
+	while (patientDetailActivity.loadComplete == false) {};
+	JSONObject countObj;
+	try {
+		countObj = new JSONObject(patientDetailActivity.results);
+		return countObj.getInt("count");
+	} catch (JSONException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	return 0;
 }
 }

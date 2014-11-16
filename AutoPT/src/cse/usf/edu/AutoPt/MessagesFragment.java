@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.app.Fragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,11 +21,7 @@ import android.widget.ListView;
 
 public class MessagesFragment extends Fragment {
 	HelperFunctions help = new HelperFunctions();
-//	static int pId = 63;
-//	static int drId = 1;
 	
-//	static final int pId = patientDetailActivity.user.pId;
-//	static final int drId = patientDetailActivity.user.drId;
 	public MessagesFragment() {
     }
 
@@ -38,7 +35,7 @@ public class MessagesFragment extends Fragment {
     	View messagesView = inflater.inflate(R.layout.messages, container, false);
         ListView listView = (ListView)messagesView.findViewById(R.id.listMessages);
         
-		setToSeenMessages();
+		
         
     	ArrayList<message> messages = new ArrayList<message>();
 		String[] messageArray = getMessages();		
@@ -61,7 +58,7 @@ public class MessagesFragment extends Fragment {
 				message newMessage = new message(theMess, time, userType);
 				messages.add(newMessage); 	
 			}
-	
+
 	        MessageAdapter adapter = new MessageAdapter(getActivity(), R.id.listMessages, messages);
 	        listView.setAdapter(adapter);  
 		}
@@ -81,20 +78,17 @@ public class MessagesFragment extends Fragment {
 	
 						new dbMakeQuery().execute(query, "i");
 						while (patientDetailActivity.loadComplete == false) {}
-			        	Fragment fragment = new MessagesFragment();
-			            Bundle arguments = new Bundle();
-			            		            System.out.println("this");
-			            fragment.setArguments(arguments);
-			            getFragmentManager().beginTransaction()
-			                    .add(R.id.patient_detail_container, fragment)
-			                    .commit();
+
+						getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.patient_detail_container)).commit();
+						
+			            getFragmentManager().beginTransaction().add(R.id.patient_detail_container, new MessagesFragment()).commit();
+			            
 					}
 				} catch (Exception e) {
 					
 				}
 			}
 		});
-		
         return messagesView;
     }
     private String[] getMessages() {
@@ -124,12 +118,5 @@ public class MessagesFragment extends Fragment {
 			e.printStackTrace();
 		}
     	return count;
-    }
-    
-    private void setToSeenMessages() {
-    	String query = "UPDATE messages SET viewed='1' WHERE userId='" + patientDetailActivity.user.drId + "' and userType='0' and patient='" 
-    					+ patientDetailActivity.user.pId +"'";
-    	new dbMakeQuery().execute(query, "u");
-    	while (patientDetailActivity.loadComplete == false) {};
     }
 }

@@ -53,10 +53,10 @@ public class MessageAdapter extends ArrayAdapter<message>  {
 			LayoutInflater inflater = ((Activity)context).getLayoutInflater(); 
 			
 			int res = 0;
-			if (direction == 0) {
-				res = R.layout.message_left;
-			} else if (direction == 1) {
+			if (direction == 1) {
 				res = R.layout.message_right;
+			} else {
+				res = R.layout.message_left;
 			} 
 			convertView = inflater.inflate(res, viewGroup, false);
 		}

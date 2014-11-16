@@ -15,7 +15,7 @@ import org.json.JSONObject;
  * TODO: Replace all uses of this class before publishing your app.
  */
 public class Menu {
-
+	static HelperFunctions help = new HelperFunctions();
     /**
      * An array of sample (dummy) items.
      */
@@ -29,7 +29,7 @@ public class Menu {
     static {
     	
     	String messages = "Messages";
-    	int countM = getUnseenMessages();
+    	int countM = help.getUnseenMessages();
     	if (countM > 0) {
     		messages = messages + "          *Unread*: " + countM;
     	}
@@ -67,21 +67,5 @@ public class Menu {
         public String toString() {
             return content;
         }
-    }
-    public static int getUnseenMessages() {
-    	String query = "SELECT COUNT(*) as count FROM messages WHERE userId='" + patientDetailActivity.user.drId 
-    			+ "' and userType='0' and patient='" + patientDetailActivity.user.pId + "'" + " and viewed='0'";
-    	new dbMakeQuery().execute(query, "f");
-    	patientDetailActivity.loadComplete = false;
-    	while (patientDetailActivity.loadComplete == false) {};
-    	JSONObject countObj;
-		try {
-			countObj = new JSONObject(patientDetailActivity.results);
-			return countObj.getInt("count");
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
     }
 }
