@@ -159,3 +159,4 @@
                 android:layout_alignLeft="@+id/scrollView1"
                 android:text="Connection Status:" />
 
+</RelativeLayout>
