@@ -13,6 +13,7 @@ public class patient {
         this.perscription = i;
         this.drId = drId;
         this.pId = pId;
+        
     }
 	
 	
