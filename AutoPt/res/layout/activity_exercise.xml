@@ -25,15 +25,6 @@
         android:layout_alignParentRight="true"
         android:text="Connect" />
 
-    <TextView
-        android:id="@+id/txtStatusMsg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_alignTop="@+id/textView3"
-        android:layout_marginTop="20dp"
-        android:text="TextView" />
-
     <Button
         android:id="@+id/btnSendData"
         android:layout_width="wrap_content"
@@ -41,42 +32,7 @@
         android:layout_above="@+id/btnConnect"
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
-        android:text="Send Data" />
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnSendData"
-        android:layout_alignLeft="@+id/textView6"
-        android:layout_marginBottom="60dp"
-        android:text="Connection Status:" />
-
-    <TextView
-        android:id="@+id/txtBreathing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/textView5"
-        android:layout_alignParentRight="true"
-        android:text="Awaiting..." />
-
-    <TextView
-        android:id="@+id/txtPeakAccel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView6"
-        android:layout_alignBottom="@+id/textView6"
-        android:layout_alignParentRight="true"
-        android:text="Awaiting..." />
-
-    <TextView
-        android:id="@+id/txtPosture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView5"
-        android:layout_alignBottom="@+id/textView5"
-        android:layout_alignParentRight="true"
-        android:text="Awaiting..." />
+        android:text="Finish Exercise" />
 
     <TextView
         android:id="@+id/textView6"
@@ -93,15 +49,6 @@
         android:layout_alignLeft="@+id/textView2"
         android:layout_below="@+id/textView2"
         android:text="Posture:" />
-
-    <TextView
-        android:id="@+id/txtHeartRate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="67dp"
-        android:text="Awaiting..." />
 
     <TextView
         android:id="@+id/textView1"
@@ -134,4 +81,81 @@
         android:textColorLink="#0000FF"
         android:textSize="20sp" />
 
-</RelativeLayout>
+    <TextView
+        android:id="@+id/txtHeartRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="65dp"
+        android:text="Awaiting..." />
+
+    <TextView
+        android:id="@+id/txtBreathing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/txtPosture"
+        android:layout_alignLeft="@+id/txtHeartRate"
+        android:text="Awaiting..." />
+
+    <TextView
+        android:id="@+id/txtPosture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/txtBreathing"
+        android:layout_below="@+id/textView2"
+        android:text="Awaiting..." />
+
+    <TextView
+        android:id="@+id/txtPeakAccel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView6"
+        android:layout_alignBottom="@+id/textView6"
+        android:layout_alignLeft="@+id/txtPosture"
+        android:text="Awaiting..." />
+
+            <ScrollView
+                android:id="@+id/scrollView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/textView3"
+                android:layout_alignLeft="@+id/textView6"
+                android:layout_alignRight="@+id/txtPeakAccel"
+                android:layout_below="@+id/textView6"
+                android:layout_marginTop="19dp" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/txtNotes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/textView3"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="38dp"
+                        android:text="TextView" />
+                </LinearLayout>
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/txtStatusMsg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/btnSendData"
+                android:layout_alignLeft="@+id/textView3"
+                android:layout_marginBottom="23dp"
+                android:text="TextView" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/txtStatusMsg"
+                android:layout_alignLeft="@+id/scrollView1"
+                android:text="Connection Status:" />
+
