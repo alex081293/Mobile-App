@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent" 
+    android:orientation="vertical"
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_x="44dp"
-        android:layout_y="36dp"
+        android:layout_marginTop="5dp"
         android:text="Tone Alert"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -24,8 +25,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_x="29dp"
-        android:layout_y="106dp"
+        android:layout_marginTop="5dp"
         android:text="Vibration Alert"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
@@ -36,6 +36,13 @@
         android:layout_x="164dp"
         android:layout_y="92dp"
         android:text="ToggleButton" />
+    <TextView
+        android:id="@+id/alertTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Time you wish to be reminded to complete therapy sessions:"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TimePicker
         android:id="@+id/alertTimePicker"
@@ -44,13 +51,6 @@
         android:layout_x="42dp"
         android:layout_y="229dp" />
 
-    <TextView
-        android:id="@+id/alertTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_x="76dp"
-        android:layout_y="174dp"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+    
 
-</AbsoluteLayout>
+</LinearLayout>

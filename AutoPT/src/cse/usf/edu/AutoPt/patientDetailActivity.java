@@ -1,5 +1,8 @@
 package cse.usf.edu.AutoPt;
 
+import java.sql.Time;
+import java.util.Calendar;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,12 +30,17 @@ import cse.usf.edu.AutoPt.MainActivity;
  */
 public class patientDetailActivity extends Activity {
 	public static String results;
-	public static patient user = new patient("","",0,0,0);
+	private static Calendar c = Calendar.getInstance();
+	public static patient user = new patient("","",0,0,0,0,0, "0:0:0");
+	public static int month = c.get(Calendar.MONTH)+1;
+	public static int day = c.get(Calendar.DAY_OF_MONTH);
+	public static int year = c.get(Calendar.YEAR);
 	
 	public static boolean loadComplete = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
         setContentView(R.layout.activity_patient_detail);
 
         // Show the Up button in the action bar.
@@ -66,7 +74,7 @@ public class patientDetailActivity extends Activity {
 	            	fragment = new SessionsListFragment();
 	            	break;
 	            case 3:
-	            	fragment = new AlertsFragment();
+	            	fragment = new SettingsFragment();
 	            	break;
 	            case 4:
 	            	fragment = new MessagesFragment();
@@ -101,6 +109,16 @@ public class patientDetailActivity extends Activity {
             navigateUpTo(new Intent(this, MainActivity.class));
             return true;
         }
+        
+        
         return super.onOptionsItemSelected(item);
     }
+    public void changeFragment(MenuItem item){
+    	Fragment fragment = new SessionsListFragment();
+    	getFragmentManager().beginTransaction()
+        .replace(R.id.patient_detail_container, fragment, fragment.toString())
+        .commit();
+    	
+    }
+    
 }

@@ -1,5 +1,8 @@
 package cse.usf.edu.AutoPt;
 
+import java.sql.Time;
+import java.util.Calendar;
+
 import org.json.JSONObject;
 
 import android.os.Bundle;
@@ -16,7 +19,7 @@ import cse.usf.edu.AutoPt.dbMakeQuery;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
-	public static patient user = new patient("","",0,0,0);
+	public static patient user = new patient("","",0,0,0,0,0,"0:0:0");
 	public HomeFragment() {
     }
 

@@ -1,5 +1,8 @@
 package cse.usf.edu.AutoPt;
 
+import java.sql.Time;
+import java.util.Calendar;
+
 import org.json.JSONObject;
 
 import android.content.BroadcastReceiver;
@@ -62,21 +65,28 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
     		Notification noteM = new Notification(R.drawable.smalllogo, "New Messages from AutoPT", System.currentTimeMillis());
     		noteM.setLatestEventInfo(c, "New Message", "Your Physical Therapist has sent you a message.", ij);            
 
-    		Notification noteS = new Notification(R.drawable.smalllogo, "New Session", System.currentTimeMillis());
+    		Notification noteS = new Notification(R.drawable.smalllogo, "Session Reminder", System.currentTimeMillis());
     		noteS.setLatestEventInfo(c, "Therapy Session", "You have a therapy session to complete today.", ij); 
     		        
     		int count = HelperFunctions.getUnseenMessages();
-    		int workoutCount = HelperFunctions.getTodaysWorkoutCount();
+    		int workoutCount = HelperFunctions.getTodaysWorkouts();
    		
-    		// if (patientDetailActivity.user.soundSettings == 1) 
-			 noteM.defaults |= Notification.DEFAULT_SOUND;
-		 // if (patientDetailActivity.user.vibrateSettings == 1)
-			 noteM.defaults |= Notification.DEFAULT_VIBRATE;   		
-    		
+    		 if (patientDetailActivity.user.soundSettings == 1) {
+    			 noteM.defaults |= Notification.DEFAULT_SOUND;
+			 	noteS.defaults |= Notification.DEFAULT_SOUND;
+    		 }
+			 if (patientDetailActivity.user.vibrateSettings == 1) {
+				 noteM.defaults |= Notification.DEFAULT_VIBRATE;   	
+				 noteS.defaults |= Notification.DEFAULT_VIBRATE;
+			 }
+			 Calendar cal = Calendar.getInstance();
+			 int hour = cal.get(Calendar.HOUR_OF_DAY);
+			 int min = cal.get(Calendar.MINUTE);
+			 String currentTime = hour + ":" + min + ":" + "00";
     		if (count > 0) {	    		 
 	    	     mgr.notify(MSGCODE, noteM);   
 	    	     HelperFunctions.setToSeenMessages();
-    		} else if (workoutCount > 0) {//&& patientDetailActivity.user.alertTime = strDate {
+    		} else if (workoutCount > 0 && patientDetailActivity.user.alertTime.equals(currentTime)) {
     			mgr.notify(SESHCODE, noteS);
     		}
     	}
@@ -154,7 +164,7 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 
 	private boolean mTwoPane;
 
-	public patient user = new patient("", "", 0, 0, 0);
+	public patient user = new patient("", "", 0, 0, 0,0,0, "0:0:0");
 	public static final String MY_APP_PREFS = "MyAppPrefs";
 
 	@Override
@@ -169,7 +179,11 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 		if (user.perscription == 0) {
 			setContentView(R.layout.firsttime);
 		} else {
-			patientDetailActivity.user=user;
+			String query = "select * from patients where loginToken="
+					+ user.perscription;
+			
+			new dbMakeQuery().execute(query, "f");
+		    while (patientDetailActivity.loadComplete == false) {}
 			updateUser(user);
 			setContentView(R.layout.activity_patient_list);
 		}
@@ -214,18 +228,31 @@ public class MainActivity extends Activity implements MainFragment.Callbacks {
 		}
 	}
 	
+//	public static void changeFragment(String id) {
+//			// In single-pane mode, simply start the detail activity
+//			// for the selected item ID.
+//			Intent detailIntent = new Intent(getContext(), patientDetailActivity.class);
+//			detailIntent.putExtra(patientDetailFragment.ARG_ITEM_ID, id);
+//			startActivity(detailIntent);
+//		
+//	}
+	
+	@SuppressWarnings("deprecation")
 	public void updateUser(patient user){
 		try{
-			String query = "select * from patients where loginToken="
-					+ user.perscription;
-			new dbMakeQuery().execute(query, "f");
+			
 			JSONObject jsonObject = new JSONObject(patientDetailActivity.results);
 			user.firstName = jsonObject.getString("firstName");
 			user.lastName = jsonObject.getString("lastName");
 			user.perscription = jsonObject.getInt("loginToken");
 			user.pId = jsonObject.getInt("id");
 			user.drId = jsonObject.getInt("doctorId");
+			
+			user.alertTime = jsonObject.getString("alertTime");
+			user.soundSettings = jsonObject.getInt("soundSetting");
+			user.vibrateSettings = jsonObject.getInt("vibrateSetting");
 			patientDetailActivity.user = user;
+	
 		}catch(Exception e){e.printStackTrace();}	
     }
 }
