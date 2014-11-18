@@ -127,6 +127,7 @@ function generateCompletedTable($completedSessions) {
 	    <th class="tg-031e">Session Name</th>
 	    <th class="tg-031e">Notes</th>
 	    <th class="tg-031e">Time Completed</th>
+	    <th class="tg-031e">Workout Length</th>
 	    <th class="tg-031e">Heart Rate</th>
 	    <th class="tg-031e">Breathing Rate</th>
 	    <th class="tg-031e">Peak Acceleration</th>
@@ -139,6 +140,7 @@ function generateCompletedTable($completedSessions) {
 		    <td class="tg-031e">' . $sesh['sessionName'] . '</td>
 		    <td class="tg-031e">' . $sesh['notes'] . '</td>
 		    <td class="tg-031e">' . $time . '</td>
+		    <td class="tg-031e">' . $sesh['timeTaken'] . '</td>
 		    <td class="tg-031e">' . $sesh['heartRate'] . '</td>
 		    <td class="tg-031e">' . $sesh['breathingRate'] . '</td>
 		    <td class="tg-031e">' . $sesh['peakAccel'] . '</td>
