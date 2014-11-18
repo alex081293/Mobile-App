@@ -133,7 +133,7 @@ function generateCompletedTable($completedSessions) {
 	    <th class="tg-031e">Posture</th>
 	  </tr> ';
 	  foreach ($completedSessions as $sesh) {
-	  	$time = ($sesh['heartRate'] == 0 && $sesh['breathingRate'] == 0) ? "Missed Workout" : date('F j, Y, g:i a', strtotime($sesh['time']));
+	  	$time = ($sesh['heartRate'] == 0 && $sesh['breathingRate'] == 0) ? ("" . date('F j, Y', strtotime($sesh['time'])) . " : Missed Workout") : date('F j, Y, g:i a', strtotime($sesh['time']));
 	 	echo '
 	 	<tr>
 		    <td class="tg-031e">' . $sesh['sessionName'] . '</td>

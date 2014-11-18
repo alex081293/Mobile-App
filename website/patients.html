@@ -72,7 +72,7 @@
     	$patients = dbFetch("SELECT * FROM patients WHERE id='$pId'");
     	$patient = $patients[0];
 
-    	$query = "UPDATE sessions SET completed='1' where time < NOW()";
+    	$query = "UPDATE sessions SET completed='1' where time < CURRENT_DATE";
     	dbQuery($query);
 
     	updateUnseenDrMsgs($drId, $pId);
