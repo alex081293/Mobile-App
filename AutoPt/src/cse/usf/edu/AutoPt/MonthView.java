@@ -365,20 +365,7 @@ public class MonthView extends TableLayout{
 			tv = (TextView)v;
 			
 			tv.setTextColor(Color.YELLOW);
-			
-			
-//			else if(selected_day==day)
-//			{
-//				tv = btn;
-//				
-//				btn.setTextColor(Color.YELLOW);
-//			}
-//			else
-//				btn.setTextColor(Color.WHITE);
-//			if(tv.getText().toString().trim().equals(String.valueOf(today.get(Calendar.DATE))))
-//			{
-//				tv.setBackgroundResource(R.drawable.selectedgrad);
-//			}
+
 			day = Integer.parseInt(v.getTag().toString());
 			selected_day = day;
 			
@@ -391,9 +378,7 @@ public class MonthView extends TableLayout{
 			cal.set(Calendar.DAY_OF_MONTH, day);
 			patientDetailActivity.day = cal.get(Calendar.DAY_OF_MONTH);
 			patientDetailActivity.month = cal.get(Calendar.MONTH)+1;
-			patientDetailActivity.year = cal.get(Calendar.YEAR);
-			
-            
+			patientDetailActivity.year = cal.get(Calendar.YEAR);            
 		}
 	};
 }

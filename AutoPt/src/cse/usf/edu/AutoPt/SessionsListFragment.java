@@ -144,18 +144,8 @@ public class SessionsListFragment extends Fragment {
 						R.drawable.sessionslistbutton));
 				LinearLayout ll = (LinearLayout) getView().findViewById(
 						R.id.listSessions);
-				LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,
-						LayoutParams.WRAP_CONTENT);
-				Button myButton = new Button(getActivity());
-				myButton.setText("Change the Date");
-				myButton.setId(4564);
-				myButton.setBackgroundDrawable(getResources().getDrawable(
-						R.drawable.sessionslistbutton));
-				final int id_ = btn2.getId();
-				// myButton.setBackground(R.drawable.se)
+				final int id_ = btn2.getId();				
 				ll.addView(btn2);
-				ll.addView(myButton, lp);
-				
 				Button btn1 = ((Button) getView().findViewById(id_));
 				btn1.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View view) {
@@ -164,9 +154,8 @@ public class SessionsListFragment extends Fragment {
 								Toast.LENGTH_SHORT).show();
 					}
 				});
-
 			}
-		} else{
+		} else {
 			Button myButton = new Button(getActivity());
 			myButton.setText("No More Sessions on this Day");
 			myButton.setBackgroundDrawable(getResources().getDrawable(
@@ -186,6 +175,25 @@ public class SessionsListFragment extends Fragment {
 			});
 
 		}
+		// Creates button to go to calendar
+		LinearLayout ll = (LinearLayout) getView()
+				.findViewById(R.id.listSessions);
+		LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.WRAP_CONTENT);
+		Button myButton = new Button(getActivity());
+		myButton.setText("Change the Date");
+		myButton.setId(4564);
+		myButton.setBackgroundDrawable(getResources().getDrawable(
+				R.drawable.sessionslistbutton));			
+		ll.addView(myButton, lp);
+
+		myButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				getFragmentManager().beginTransaction().remove(getFragmentManager().findFragmentById(R.id.patient_detail_container)).commit();
+	            getFragmentManager().beginTransaction().add(R.id.patient_detail_container, new CalendarFragment()).commit();
+			}
+		});				
+		
 
 	}
 
