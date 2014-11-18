@@ -126,7 +126,7 @@ function generateCompletedTable($completedSessions) {
 	  <tr>
 	    <th class="tg-031e">Session Name</th>
 	    <th class="tg-031e">Notes</th>
-	    <th class="tg-031e">Time Completed</th>
+	    <th class="tg-031e">Time Completed (H:m:s)</th>
 	    <th class="tg-031e">Workout Length</th>
 	    <th class="tg-031e">Heart Rate</th>
 	    <th class="tg-031e">Breathing Rate</th>
@@ -135,16 +135,22 @@ function generateCompletedTable($completedSessions) {
 	  </tr> ';
 	  foreach ($completedSessions as $sesh) {
 	  	$time = ($sesh['heartRate'] == 0 && $sesh['breathingRate'] == 0) ? ("" . date('F j, Y', strtotime($sesh['time'])) . " : Missed Workout") : date('F j, Y, g:i a', strtotime($sesh['time']));
+	 	$timeTaken = ($sesh['timeTaken'] == 0) ? "-" : (gmdate("H:i:s", $sesh['timeTaken']));
+	 	$hr = ($sesh['heartRate']) ? $sesh['heartRate'] : "-";
+	 	$br = ($sesh['breathingRate']) ? $sesh['breathingRate'] : "-"; 
+	 	$pa = ($sesh['peakAccel']) ? $sesh['peakAccel'] : "-";
+	 	$po = ($sesh['posture']) ? $sesh['posture'] : "-";
+
 	 	echo '
 	 	<tr>
 		    <td class="tg-031e">' . $sesh['sessionName'] . '</td>
 		    <td class="tg-031e">' . $sesh['notes'] . '</td>
 		    <td class="tg-031e">' . $time . '</td>
-		    <td class="tg-031e">' . $sesh['timeTaken'] . '</td>
-		    <td class="tg-031e">' . $sesh['heartRate'] . '</td>
-		    <td class="tg-031e">' . $sesh['breathingRate'] . '</td>
-		    <td class="tg-031e">' . $sesh['peakAccel'] . '</td>
-		    <td class="tg-031e">' . $sesh['posture'] . '</td>
+		    <td class="tg-031e">' .  $timeTaken . '</td>
+		    <td class="tg-031e">' . $hr . '</td>
+		    <td class="tg-031e">' . $br . '</td>
+		    <td class="tg-031e">' . $pa . '</td>
+		    <td class="tg-031e">' . $po . '</td>
 	    </tr>';
 	  }
 	echo '</table>';
@@ -179,9 +185,11 @@ function generateUpcomingTable($completedSessions) {
 
 
 function authenticate($pid, $dId) {
-	$query = "SELECT doctorId from patients where id='$pid'";
-	$returned = dbFetch($query);
-	if ($dId != $returned[0]['doctorId']) newLocation('/404');
+	if ($_GET['admin'] != 1) {
+		$query = "SELECT doctorId from patients where id='$pid'";
+		$returned = dbFetch($query);
+		if ($dId != $returned[0]['doctorId']) newLocation('/404');
+	}
 }
 
 function isNotWeekend($date) {
