@@ -61,9 +61,11 @@ public class SessionsListFragment extends Fragment {
 
 		while (patientDetailActivity.loadComplete == false) {
 		}
-
+		
+		
 		String[] sessions = help
-				.breakJSONIntoArray(patientDetailActivity.results);
+			.breakJSONIntoArray(patientDetailActivity.results);
+		
 
 		if(!sessions[0].equals("")) {
 			boolean haveSession = false;
