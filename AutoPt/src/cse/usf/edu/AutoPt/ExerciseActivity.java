@@ -2,6 +2,7 @@ package cse.usf.edu.AutoPt;
 
 import android.os.Bundle;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -9,6 +10,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -19,6 +22,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.content.SharedPreferences;
 import android.R.*;
 import android.app.Activity;
@@ -28,6 +33,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -55,17 +61,31 @@ public class ExerciseActivity extends Activity {
 	String pId = Integer.toString(patientDetailActivity.user.pId);
 	String id = "";
 	boolean ctd = false;
+	Timer timer;
+	TextView tvTime;
+	int counter = 0;
+	String imageUrl = "";
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_exercise);
-	
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+		
+        
 		Bundle extras = getIntent().getExtras();
-		  
 		id = extras.getString("id");
 		String notes = extras.getString("notes");
+		imageUrl = extras.getString("url");
+		try {
+		URL urlInput = new URL(imageUrl);
+		new PictureUpdater().execute(urlInput);
+		} catch(Exception e) {
+			System.out.println("PictureUpdater().execute() failed");
+		}
 		
+
 		TextView notesText = (TextView) findViewById(R.id.txtNotes);
 		notesText.setText(notes);
 		
@@ -80,7 +100,7 @@ public class ExerciseActivity extends Activity {
       //Obtaining the handle to act on the CONNECT button
         TextView tv = (TextView) findViewById(R.id.txtStatusMsg);
 		String ErrorText  = "No Connection";
-		 tv.setText(ErrorText);
+		tv.setText(ErrorText);
 
         Button btnConnect = (Button) findViewById(R.id.btnConnect);
         if (btnConnect != null) {
@@ -127,6 +147,23 @@ public class ExerciseActivity extends Activity {
         				String ErrorText  = "Connected to " + DeviceName;
 						tv.setText(ErrorText);
 						ctd = true;
+						
+						tvTime = (TextView) findViewById(R.id.txtTime);
+						timer = new Timer();
+					    timer.scheduleAtFixedRate(new TimerTask() {
+					        @Override
+					        public void run() {
+					            runOnUiThread(new Runnable() {
+					                public void run() {
+					                	if (ctd) {
+					                		tvTime.setText(Integer.toString(counter));
+					                		counter++;
+					                	}
+					                }
+					            });
+
+					        }
+					    }, 1000, 1000); 
 
         			}
         			else {
@@ -154,10 +191,10 @@ public class ExerciseActivity extends Activity {
 					 tv.setText(ErrorText);
 
 					/*This disconnects listener from acting on received messages*/	
-					 btClient.removeConnectedEventListener(cxnListener);
+					btClient.removeConnectedEventListener(cxnListener);
 					/*Close the communication with the device & throw an exception if failure*/
-					 btClient.Close();
-				
+					btClient.Close();
+					ctd = false;
 				}
         	});
         }
@@ -211,13 +248,13 @@ public class ExerciseActivity extends Activity {
 				System.out.println("*** No Such Method Exception ***");
 				e1.printStackTrace();
 			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
+				System.out.println("*** Illegal Argument Exception ***");
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
+				System.out.println("*** Illegal Access Exception ***");
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
+				System.out.println("*** Invocation Target Exception ***");
 				e.printStackTrace();
 			}
 		}
@@ -270,17 +307,16 @@ public class ExerciseActivity extends Activity {
     };
     
     class SessionUpdater extends AsyncTask<URL, Integer, Long> {
-		
 	    protected Long doInBackground(URL... urls) {
-	    	
 		    try {
-		    	final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(3);
+		    	final ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(7);
 		    	nameValuePairs.add(new BasicNameValuePair("id", id));
 			    nameValuePairs.add(new BasicNameValuePair("patientId", pId));
 			    nameValuePairs.add(new BasicNameValuePair("heartRate", strHeartRate));
 			    nameValuePairs.add(new BasicNameValuePair("breathingRate", strRespirationRate));
 			    nameValuePairs.add(new BasicNameValuePair("posture", strPosture));
 			    nameValuePairs.add(new BasicNameValuePair("peakAccel", strPeakAccel));
+			    nameValuePairs.add(new BasicNameValuePair("timeTaken", Integer.toString(counter)));
 		        HttpClient httpclient = new DefaultHttpClient();
 		        HttpPost httppost = new HttpPost("http://usfandroidapp.net63.net/sessionUpdate.php");
 		        httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
@@ -306,4 +342,30 @@ public class ExerciseActivity extends Activity {
 	    }
 	}
     
+    class PictureUpdater extends AsyncTask<URL, Integer, Long> {
+	    protected Long doInBackground(URL... urls) {
+	    	try {
+				ImageView img = (ImageView)findViewById(R.id.imageView1);
+				Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(imageUrl).getContent());
+				img.setImageBitmap(bitmap); 
+			} catch (MalformedURLException e) {
+				  e.printStackTrace();
+			} catch (IOException e) {
+				  e.printStackTrace();
+			}
+		    catch(Exception e) {
+		        System.out.println("Error reading image from URL");
+		    }  
+	    	
+	        return null;
+	    }
+
+	    protected void onProgressUpdate(Integer... progress) {
+	        
+	    }
+
+	    protected void onPostExecute(Long result) {
+	    	
+	    }
+	}
 }
